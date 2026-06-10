@@ -57,10 +57,7 @@ begin
   if p_new_pin !~ '^[0-9]{6}$' then
     raise exception 'pin must be 6 digits';
   end if;
-  if p_new_pin in ('000000','111111','222222','333333','444444','555555',
-                   '666666','777777','888888','999999','123456','654321') then
-    raise exception 'pin too weak — please choose a less obvious PIN';
-  end if;
+
 
   update auth.users
     set encrypted_password = crypt(p_new_pin, gen_salt('bf'))
