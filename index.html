@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corp.HR KM System — Impact</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Supabase Project: ypxcojlqwxcwvokxsexc
+window.SUPABASE_URL  = 'https://ypxcojlqwxcwvokxsexc.supabase.co';
+window.SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlweGNvamxxd3hjd3Zva3hzZXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNzYwMDUsImV4cCI6MjA5NjY1MjAwNX0.16TSHtehlkd1nGu3CFtnzcV9uXBOUMHYFuvyqikLW7Q';
+</script>
+<style>
+:root{--p:#1E3A6E;--a:#E8571A;--bg:#F0F4FA;--card:#fff;--tx:#2D3748;--mu:#718096;--bd:#E2E8F0;--gr:#276749;--pu:#553C9A}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:14px}
+.hdr{background:linear-gradient(135deg,#1E3A6E,#2A52A0);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+.hdr h1{font-size:18px;font-weight:800}.hdr p{font-size:11px;opacity:.75;margin-top:2px}
+.hdr-badge{margin-left:auto;background:rgba(255,255,255,.15);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap}
+.sdot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+.nav{background:#fff;border-bottom:2px solid var(--bd);display:flex;overflow-x:auto}
+.nb{padding:13px 16px;border:none;background:none;cursor:pointer;color:var(--mu);font-size:13px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s;font-family:inherit}
+.nb:hover{color:var(--p);background:#F7FAFC}.nb.on{color:var(--p);border-bottom-color:var(--a)}
+.main{max-width:1280px;margin:0 auto;padding:20px}
+.sec{display:none}.sec.on{display:block}
+.card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:16px}
+.ctitle{font-size:14px;font-weight:800;color:var(--p);margin-bottom:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.g2{grid-template-columns:1fr}}
+/* FORM */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+@media(max-width:580px){.fg{grid-template-columns:1fr}}
+.fl label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.fl input,.fl select,.fl textarea{width:100%;padding:9px 11px;border:2px solid var(--bd);border-radius:8px;font-size:13px;outline:none;font-family:inherit;transition:border-color .2s}
+.fl input:focus,.fl select:focus,.fl textarea:focus{border-color:var(--p)}
+.fl textarea{resize:vertical;line-height:1.6}
+.stitle{font-size:11px;font-weight:800;color:var(--a);text-transform:uppercase;letter-spacing:.8px;padding:10px 0 6px;border-bottom:2px solid #FED7AA;margin:18px 0 4px}
+/* STARS */
+.srow{display:flex;align-items:center;padding:8px 2px;border-bottom:1px solid #F7FAFC;gap:8px}
+.sinfo{flex:1;min-width:0}
+.sname{font-size:13px;font-weight:600}.sdesc{font-size:11px;color:var(--mu);margin-top:1px}
+.sright{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.ebadge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;min-width:70px;text-align:center;white-space:nowrap;border:1px solid var(--bd);background:#F7FAFC;color:var(--mu)}
+.stars{display:flex;gap:4px}
+.star{width:30px;height:30px;border-radius:50%;border:2px solid var(--bd);background:#fff;cursor:pointer;font-size:12px;font-weight:800;color:var(--mu);transition:all .15s;font-family:inherit;line-height:1}
+.star:hover{transform:scale(1.1);border-color:var(--p)}
+.s1{background:#FEB2B2;border-color:#FC8181;color:#9B2C2C}
+.s2{background:#FEEBC8;border-color:#F6AD55;color:#7B341E}
+.s3{background:#BEE3F8;border-color:#63B3ED;color:#1A365D}
+.s4{background:#C6F6D5;border-color:#68D391;color:#1C4532}
+.s5{background:#E9D8FD;border-color:#9F7AEA;color:#44337A}
+/* QUALITATIVE */
+.qsec{background:#F7FAFC;border-radius:10px;padding:16px;margin:14px 0;border:1px solid var(--bd)}
+.qhdr{display:flex;align-items:flex-start;gap:8px;margin-bottom:10px}
+.qtitle{font-size:13px;font-weight:800;color:var(--p)}
+.qsub{font-size:11px;color:var(--mu);margin-top:2px}
+.guide{background:#EBF8FF;border-left:4px solid #3182CE;border-radius:0 8px 8px 0;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#2C5282;line-height:1.7}
+.guide strong{display:block;font-weight:800;margin-bottom:3px}
+.qq{margin-bottom:12px}
+.qlbl{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.qhint{font-size:11px;color:var(--mu);margin-bottom:5px;line-height:1.6;font-style:italic}
+.pbar-row{display:flex;align-items:center;gap:8px;margin-top:8px;background:#EDF2F7;border-radius:8px;padding:8px 12px}
+.pbar-row span{font-size:11px;font-weight:700;white-space:nowrap}
+.pbar{flex:1;height:7px;background:#E2E8F0;border-radius:4px;overflow:hidden}
+.pbf{height:100%;border-radius:4px;background:#68D391;transition:width .3s}
+/* LEGEND */
+.lgnd{background:#EEF2FF;border-radius:8px;padding:9px 14px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;font-size:12px;align-items:center}
+/* POSITION BOX */
+.posbox{background:#FFF5F5;border:2px solid #FC8181;border-radius:10px;padding:12px 14px;margin-bottom:16px}
+.posbox .fl label{color:#9B2C2C}
+.posdesc{font-size:11px;color:var(--mu);margin-top:4px}
+/* PROGRESS DOTS */
+.pdots{background:#EEF2FF;border-radius:8px;padding:10px 14px;margin-bottom:16px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:12px}
+.pdots strong{color:var(--p);font-size:12px}
+.pi{display:flex;align-items:center;gap:5px}
+.pd{width:9px;height:9px;border-radius:50%;background:#E2E8F0}
+/* INFO BOX */
+.ibox{background:#EBF8FF;border:1px solid #BEE3F8;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#2C5282;line-height:1.7}
+.ibox strong{font-weight:800}
+/* BUTTONS */
+.btn{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:800;cursor:pointer;border:none;font-family:inherit;transition:all .2s}
+.btnp{background:var(--p);color:#fff}.btnp:hover{background:#2A52A0;transform:translateY(-1px)}
+.btns{background:#fff;color:var(--p);border:2px solid var(--p)}.btns:hover{background:#EEF2FF}
+.btnd{background:#FED7D7;color:#9B2C2C;border:2px solid #FC8181}
+.bsm{padding:6px 13px;font-size:12px}
+/* MATRIX */
+.mwrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--p);color:#fff;padding:8px 9px;text-align:center;white-space:nowrap;font-size:10px;border:1px solid #2A52A0}
+td{padding:7px 8px;text-align:center;border:1px solid var(--bd)}
+.tdn{text-align:left;font-weight:700;background:#EEF2FF;white-space:nowrap}
+.tda{font-weight:800;color:var(--p)}
+.c0{background:#F7FAFC;color:#CBD5E0}
+.c1{background:#FEB2B2;color:#9B2C2C;font-weight:700}
+.c2{background:#FEEBC8;color:#7B341E;font-weight:700}
+.c3{background:#BEE3F8;color:#1A365D;font-weight:700}
+.c4{background:#C6F6D5;color:#1C4532;font-weight:700}
+.c5{background:#E9D8FD;color:#44337A;font-weight:700}
+.trave td{background:#EEF2FF;font-weight:700}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.pill{padding:5px 13px;border-radius:18px;border:2px solid var(--bd);background:#fff;cursor:pointer;font-size:12px;font-weight:700;color:var(--mu);font-family:inherit;transition:all .2s}
+.pill.on,.pill:hover{border-color:var(--p);color:var(--p);background:#EEF2FF}
+/* PROFILES */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.pcard{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.09);border:1px solid var(--bd)}
+.phead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--p),#4299E1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0}
+.pname{font-size:14px;font-weight:800}.prole{font-size:11px;color:var(--mu);margin-top:2px}
+.br{margin-bottom:7px}
+.brl{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px}
+.brt{height:8px;background:#EDF2F7;border-radius:4px;overflow:hidden}
+.brf{height:100%;border-radius:4px;transition:width .5s}
+.tag{background:#EEF2FF;color:var(--p);padding:2px 7px;border-radius:9px;font-size:11px;font-weight:700;display:inline-block;margin:2px}
+.pdiv{height:1px;background:var(--bd);margin:9px 0}
+/* STATS */
+.srow2{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.08);border-top:4px solid var(--p)}
+.svl{font-size:34px;font-weight:900;color:var(--p)}
+.slb{font-size:11px;color:var(--mu);margin-top:3px;font-weight:600}
+/* GAP */
+.grow{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px}
+.cbadge{padding:2px 8px;border-radius:8px;font-size:10px;font-weight:800;min-width:50px;text-align:center}
+.gbt{flex:1;height:7px;background:#EDF2F7;border-radius:4px;overflow:hidden}
+.gbf{height:100%;border-radius:4px;background:#FC8181}
+/* MODAL */
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;display:none;align-items:center;justify-content:center;padding:16px}
+.moverlay.on{display:flex}
+.mdlg{background:#fff;border-radius:14px;padding:24px;max-width:500px;width:100%;box-shadow:0 16px 48px rgba(0,0,0,.25);animation:pop .2s ease}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.mico{font-size:32px;text-align:center;margin-bottom:8px}
+.mtitle{font-size:16px;font-weight:800;color:var(--p);text-align:center;margin-bottom:6px}
+.mmsg{font-size:12px;color:var(--mu);line-height:1.7;text-align:center;margin-bottom:8px}
+.mhl{background:#FFF3E0;border-radius:7px;padding:9px 12px;font-size:13px;color:#C05621;font-weight:700;margin-bottom:12px;text-align:center}
+.mq{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px}
+.mhint{font-size:11px;color:var(--mu);margin-bottom:7px;line-height:1.6;font-style:italic}
+.mdlg textarea{width:100%;height:110px;padding:9px;border:2px solid var(--bd);border-radius:7px;font-size:13px;font-family:inherit;resize:vertical;outline:none;transition:border-color .2s}
+.mdlg textarea:focus{border-color:var(--p)}
+.mchar{font-size:11px;font-weight:700;margin-top:4px;text-align:right}
+.mbtns{display:flex;gap:9px;justify-content:center;margin-top:14px}
+/* SETUP */
+.sbox{background:#FFFBEB;border:2px dashed #F6AD55;border-radius:10px;padding:16px;margin-bottom:16px}
+.sbox h3{color:#C05621;margin-bottom:5px;font-size:13px;font-weight:800}
+.sbox p{color:var(--mu);font-size:12px;margin-bottom:10px}
+.urow{display:flex;gap:7px;flex-wrap:wrap}
+.urow input{flex:1;min-width:220px;padding:9px 11px;border:2px solid #F6AD55;border-radius:7px;font-size:13px;outline:none;font-family:inherit}
+.stepc{border-left:4px solid var(--a);padding:10px 12px;background:#fff;border-radius:0 8px 8px 0;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+code{background:#EEF2FF;color:var(--p);padding:1px 5px;border-radius:4px;font-size:12px}
+pre{background:#1A202C;color:#A8FF78;padding:14px;border-radius:8px;overflow-x:auto;font-size:11px;line-height:1.7;max-height:360px;overflow-y:auto;margin-top:8px}
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:#276749;color:#fff;padding:12px 18px;border-radius:8px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.2);display:none;z-index:999;font-size:13px}
+.empty{text-align:center;padding:40px;color:var(--mu)}
+/* AI TRAINING SECTION */
+.summary-sec{background:#FFFBEB;border:2px solid #FBD38D;border-radius:10px;padding:16px;margin:14px 0}
+.ai-sec{background:#F5F0FF;border:1px solid #C4B5FD;border-radius:10px;padding:16px;margin:14px 0}
+.ai-hdr{font-size:14px;font-weight:800;color:#5B21B6;margin-bottom:8px;padding-bottom:8px;border-bottom:2px solid #DDD6FE;display:flex;align-items:center;gap:8px}
+.ai-sub{font-size:12px;font-weight:800;color:#7C3AED;margin:16px 0 8px;padding:5px 10px;background:#EDE9FE;border-radius:6px;letter-spacing:.3px}
+.ai-field{margin-bottom:10px}
+.ai-lbl{font-size:12px;font-weight:700;color:#4C1D95;margin-bottom:3px}
+.ai-hint{font-size:11px;color:#6B7280;margin-bottom:5px;font-style:italic;line-height:1.5}
+/* REPORT */
+.rpt-btn{background:linear-gradient(135deg,#5B21B6,#7C3AED);color:#fff;border:none;padding:8px 14px;border-radius:7px;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .2s;width:100%;margin-top:6px}
+.rpt-btn:hover{background:linear-gradient(135deg,#4C1D95,#6D28D9);transform:translateY(-1px)}
+/* SYNC INDICATOR */
+.sync-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px;padding:8px 12px;border-radius:8px;background:#F7FAFC;border:1px solid var(--bd)}
+/* LOGIN */
+.login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#1E3A6E 0%,#2A52A0 100%);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{background:#fff;border-radius:16px;padding:32px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-logo{text-align:center;font-size:36px;margin-bottom:6px}
+.login-title{text-align:center;font-size:18px;font-weight:800;color:var(--p);margin-bottom:4px}
+.login-sub{text-align:center;font-size:12px;color:var(--mu);margin-bottom:24px}
+.login-fl{margin-bottom:14px}
+.login-fl label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.login-fl input{width:100%;padding:12px 14px;border:2px solid var(--bd);border-radius:10px;font-size:15px;outline:none;font-family:inherit;transition:border-color .2s;letter-spacing:2px}
+.login-fl input:focus{border-color:var(--p)}
+.login-fl input.pin{text-align:center;font-size:22px;letter-spacing:14px;font-weight:700}
+.login-btn{width:100%;background:linear-gradient(135deg,#1E3A6E,#2A52A0);color:#fff;border:none;padding:13px;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:6px;transition:all .2s}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,58,110,.4)}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.login-err{background:#FEE;color:#9B2C2C;padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:12px;display:none;border:1px solid #FCC}
+.login-err.on{display:block}
+.user-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;cursor:pointer}
+.user-chip:hover{background:rgba(255,255,255,.25)}
+</style>
+</head>
+<body>
+
+<!-- CHANGE PIN OVERLAY -->
+<div class="login-overlay" id="pinOverlay" style="display:none">
+  <div class="login-card">
+    <div class="login-logo">🔑</div>
+    <div class="login-title">ตั้ง PIN ใหม่</div>
+    <div class="login-sub">เข้าใช้ครั้งแรก — กรุณาตั้ง PIN ของคุณเอง (6 หลัก)</div>
+    <div class="login-err" id="pinErr"></div>
+    <form id="pinForm" onsubmit="return doChangePin(event)">
+      <div class="login-fl">
+        <label>PIN ใหม่ (6 หลัก)</label>
+        <input type="password" id="newPin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+               class="pin" required placeholder="••••••">
+      </div>
+      <div class="login-fl">
+        <label>ยืนยัน PIN ใหม่</label>
+        <input type="password" id="newPin2" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+               class="pin" required placeholder="••••••">
+      </div>
+      <button type="submit" class="login-btn" id="pinBtn">บันทึก PIN ใหม่</button>
+      <div style="font-size:11px;color:var(--mu);margin-top:12px;line-height:1.6">
+        ⚠️ ห้ามใช้ PIN ที่เดาง่าย เช่น 000000, 123456, 111111<br>
+        💡 PIN ใหม่จะใช้สำหรับการเข้าระบบครั้งถัดไป
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo">🔐</div>
+    <div class="login-title">Corp.HR KM System</div>
+    <div class="login-sub">เข้าสู่ระบบด้วยรหัสพนักงาน</div>
+    <div class="login-err" id="loginErr"></div>
+    <form id="loginForm" onsubmit="return doLogin(event)">
+      <div class="login-fl">
+        <label>รหัสพนักงาน</label>
+        <input type="text" id="loginEmp" autocomplete="username" required placeholder="เช่น 05242" maxlength="5">
+      </div>
+      <div class="login-fl">
+        <label>PIN 6 หลัก</label>
+        <input type="password" id="loginPin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+               class="pin" autocomplete="current-password" required placeholder="••••••">
+      </div>
+      <button type="submit" class="login-btn" id="loginBtn">เข้าสู่ระบบ</button>
+    </form>
+  </div>
+</div>
+
+<div class="hdr">
+  <div style="font-size:26px">📊</div>
+  <div>
+    <h1>Corp.HR — Knowledge Management System</h1>
+    <p>Impact Exhibition Management Co., Ltd. · ฝ่ายบริหารทรัพยากรบุคคล</p>
+  </div>
+  <div class="user-chip" id="userChip" onclick="doLogout()" title="คลิกเพื่อออกจากระบบ" style="display:none">
+    <span class="sdot" style="background:#48BB78"></span>
+    <span id="userName">—</span>
+    <span style="opacity:.7">· ออกจากระบบ</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nb on" onclick="go('form',this)">📝 กรอก Skill</button>
+  <button class="nb" onclick="go('matrix',this)">📊 Skill Matrix</button>
+  <button class="nb" onclick="go('profiles',this)">👤 Profiles</button>
+  <button class="nb" onclick="go('dashboard',this)">📈 Dashboard</button>
+  <button class="nb" onclick="go('expect',this)">📋 Expectation</button>
+  <button class="nb" onclick="go('setup',this)">⚙️ ตั้งค่า</button>
+</div>
+
+<div class="main">
+
+<!-- ======= FORM ======= -->
+<div class="sec on" id="s-form">
+<div class="card">
+  <div class="ctitle">📝 กรอก Knowledge &amp; Skills ของคุณ</div>
+
+  <div class="ibox">
+    <strong>📌 แนวทางการกรอกข้อมูล</strong>
+    ระบบมี 2 ส่วน: (1) ให้คะแนนทักษะ 1–5 และ (2) อธิบายเชิงคุณภาพ <strong>อย่างน้อย 500 ตัวอักษรต่อหมวด</strong>
+    — หากให้คะแนนเกินระดับที่คาดหวังสำหรับตำแหน่งของคุณ ระบบจะขอคำอธิบายเพิ่มเติม
+  </div>
+
+  <div class="pdots" id="pdots">
+    <strong>ความครบถ้วน:</strong>
+    <span class="pi"><span class="pd" id="d-info"></span>ข้อมูลส่วนตัว</span>
+    <span class="pi"><span class="pd" id="d-hr"></span>HR Skills</span>
+    <span class="pi"><span class="pd" id="d-dig"></span>Digital</span>
+    <span class="pi"><span class="pd" id="d-soft"></span>Soft Skills</span>
+    <span class="pi"><span class="pd" id="d-qhr"></span>คุณภาพ HR</span>
+    <span class="pi"><span class="pd" id="d-qdig"></span>คุณภาพ Digital</span>
+    <span class="pi"><span class="pd" id="d-qsoft"></span>คุณภาพ Soft</span>
+  </div>
+
+  <form id="kmform" onsubmit="submitForm(event)">
+    <div class="lgnd">
+      <strong>คะแนน:</strong>
+      <span>⚫ 0=ยังไม่มี</span>
+      <span style="color:#9B2C2C">🔴 1=เพิ่งเริ่ม</span>
+      <span style="color:#7B341E">🟠 2=พอรู้</span>
+      <span style="color:#1A365D">🔵 3=ทำได้</span>
+      <span style="color:#1C4532">🟢 4=ชำนาญ</span>
+      <span style="color:#44337A">🟣 5=เชี่ยวชาญ</span>
+    </div>
+
+    <div class="fg">
+      <div class="fl"><label>ชื่อ-นามสกุล *</label><input id="fn" placeholder="ชื่อ-นามสกุล" required oninput="chkInfo()"></div>
+      <div class="fl"><label>ชื่อเล่น</label><input id="fk" placeholder="ชื่อเล่น"></div>
+      <div class="fl"><label>ตำแหน่ง *</label><input id="fp" placeholder="เช่น HR Specialist" required oninput="chkInfo()"></div>
+      <div class="fl"><label>หน้าที่หลัก</label>
+        <select id="ff">
+          <option>Recruitment</option><option>Payroll &amp; C&B</option>
+          <option>Learning &amp; Development</option><option>Employee Relations</option>
+          <option>HRIS &amp; Analytics</option><option>Organization Development</option>
+          <option>HR Strategy</option><option>HR Generalist</option>
+        </select></div>
+      <div class="fl"><label>ประสบการณ์ HR (ปี)</label><input id="fe" type="number" min="0" max="40" placeholder="ปี" oninput="chkInfo()"></div>
+      <div class="fl"><label>วันที่อัปเดต</label><input id="fd" readonly style="background:#F7FAFC;color:var(--mu)"></div>
+    </div>
+
+    <div class="posbox">
+      <div class="fl">
+        <label>🏷️ ระดับตำแหน่ง (Position Level) * — กำหนดระดับที่คาดหวังในแต่ละทักษะ</label>
+        <select id="fpl" onchange="onPosChange()">
+          <option value="">— กรุณาเลือกระดับตำแหน่ง —</option>
+          <option value="0">🔵 พนักงาน / Officer (0–2 ปี)</option>
+          <option value="1">🟢 พนักงานอาวุโส / Senior / Specialist (3–5 ปี)</option>
+          <option value="2">🟡 หัวหน้างาน / Supervisor / Assistant Manager (5–8 ปี)</option>
+          <option value="3">🟠 ผู้จัดการ / Manager (8–12 ปี)</option>
+          <option value="4">🔴 Sr.Manager / Director (12+ ปี)</option>
+        </select>
+        <div class="posdesc" id="pldesc">เลือกระดับตำแหน่งเพื่อดูคะแนนที่คาดหวังข้างแต่ละทักษะ</div>
+      </div>
+    </div>
+
+    <!-- HR Skills -->
+    <div class="stitle">🏢 HR Functional Skills</div>
+    <div id="hr-rows"></div>
+
+    <!-- HR Qualitative -->
+    <div class="qsec">
+      <div class="qhdr">
+        <span style="font-size:20px">✍️</span>
+        <div><div class="qtitle">คำถามเชิงคุณภาพ — HR Functional Skills</div>
+          <div class="qsub">ตอบให้ครบทุกข้อ รวมกัน <strong>ไม่ต่ำกว่า 500 ตัวอักษร</strong></div></div>
+      </div>
+      <div class="guide">
+        <strong>💡 แนวทางการเขียนที่ดี</strong>
+        เขียนอย่างเฉพาะเจาะจง ยกตัวอย่างจากงานจริง — ระบุ <strong>สถานการณ์ · สิ่งที่คุณทำ · ผลลัพธ์</strong> (STAR Method) หลีกเลี่ยงคำตอบกว้างๆ
+      </div>
+      <div class="qq">
+        <div class="qlbl">📌 Q1 — กระบวนการทำงาน (Work Process)</div>
+        <div class="qhint">อธิบายขั้นตอน ผู้เกี่ยวข้อง เครื่องมือที่ใช้ และความถี่ในการทำงาน HR ที่คุณรับผิดชอบ</div>
+        <div class="fl"><textarea id="qh1" rows="3" placeholder="อธิบายกระบวนการทำงาน HR..." oninput="updQ('hr')"></textarea></div>
+      </div>
+      <div class="qq">
+        <div class="qlbl">🎯 Q2 — เป้าหมายและผลลัพธ์ (Goals &amp; Results)</div>
+        <div class="qhint">KPI ของคุณปีนี้คืออะไร ผลที่ได้เป็นอย่างไร — ระบุตัวเลข เป้าหมาย และผลจริง</div>
+        <div class="fl"><textarea id="qh2" rows="3" placeholder="เป้าหมาย KPI และผลลัพธ์..." oninput="updQ('hr')"></textarea></div>
+      </div>
+      <div class="qq">
+        <div class="qlbl">⭐ Q3 — ความสำเร็จและบทเรียน (Achievement)</div>
+        <div class="qhint">ยกตัวอย่างความสำเร็จหรือสถานการณ์ท้าทายที่จัดการได้ดี — STAR: Situation→Task→Action→Result</div>
+        <div class="fl"><textarea id="qh3" rows="3" placeholder="ตัวอย่างความสำเร็จใน HR..." oninput="updQ('hr')"></textarea></div>
+      </div>
+      <div class="pbar-row">
+        <span>รวม:</span>
+        <div class="pbar"><div class="pbf" id="pb-hr" style="width:0%"></div></div>
+        <span id="ct-hr" style="color:#E53E3E;font-size:11px;font-weight:700">0 / 500</span>
+      </div>
+    </div>
+
+    <!-- Digital Skills -->
+    <div class="stitle">💻 Digital &amp; Technology Skills</div>
+    <div id="dig-rows"></div>
+
+    <!-- Digital Qualitative -->
+    <div class="qsec">
+      <div class="qhdr">
+        <span style="font-size:20px">✍️</span>
+        <div><div class="qtitle">คำถามเชิงคุณภาพ — Digital &amp; Tech Skills</div>
+          <div class="qsub">ตอบให้ครบทุกข้อ รวมกัน <strong>ไม่ต่ำกว่า 500 ตัวอักษร</strong></div></div>
+      </div>
+      <div class="guide">
+        <strong>💡 แนวทางการเขียนที่ดี</strong>
+        ระบุเครื่องมือที่ใช้จริง บอกว่าใช้ทำอะไร บ่อยแค่ไหน สร้างผลลัพธ์อะไรให้งาน — ยิ่งเฉพาะเจาะจง ยิ่งดี
+      </div>
+      <div class="qq">
+        <div class="qlbl">🛠️ Q1 — เครื่องมือที่ใช้ (Tools in Use)</div>
+        <div class="qhint">ระบุ Digital Tools ที่ใช้บ่อย — ชื่อเครื่องมือ ใช้ทำอะไร บ่อยแค่ไหน ระดับความสามารถในการใช้</div>
+        <div class="fl"><textarea id="qd1" rows="3" placeholder="ระบุ Digital Tools ที่ใช้..." oninput="updQ('dig')"></textarea></div>
+      </div>
+      <div class="qq">
+        <div class="qlbl">🚀 Q2 — Project ที่สร้างผลลัพธ์ (Impact)</div>
+        <div class="qhint">ยกตัวอย่าง Project ที่ใช้ทักษะ Digital สร้างประโยชน์ — เครื่องมือที่ใช้ สิ่งที่ทำ และผลลัพธ์ที่ได้</div>
+        <div class="fl"><textarea id="qd2" rows="3" placeholder="ตัวอย่าง project ที่ใช้ Digital Skills..." oninput="updQ('dig')"></textarea></div>
+      </div>
+      <div class="qq">
+        <div class="qlbl">📚 Q3 — แผนพัฒนาทักษะ Digital (Plan)</div>
+        <div class="qhint">เรียนรู้ทักษะ Digital อย่างไร และมีแผนพัฒนาใน 12 เดือนข้างหน้าอย่างไร</div>
+        <div class="fl"><textarea id="qd3" rows="3" placeholder="แผนพัฒนา Digital Skills..." oninput="updQ('dig')"></textarea></div>
+      </div>
+      <div class="pbar-row">
+        <span>รวม:</span>
+        <div class="pbar"><div class="pbf" id="pb-dig" style="width:0%"></div></div>
+        <span id="ct-dig" style="color:#E53E3E;font-size:11px;font-weight:700">0 / 500</span>
+      </div>
+    </div>
+
+    <!-- Soft Skills -->
+    <div class="stitle">🌟 Soft Skills &amp; Competencies</div>
+    <div id="soft-rows"></div>
+
+    <!-- Soft Qualitative -->
+    <div class="qsec">
+      <div class="qhdr">
+        <span style="font-size:20px">✍️</span>
+        <div><div class="qtitle">คำถามเชิงคุณภาพ — Soft Skills &amp; Competencies</div>
+          <div class="qsub">ตอบให้ครบทุกข้อ รวมกัน <strong>ไม่ต่ำกว่า 500 ตัวอักษร</strong></div></div>
+      </div>
+      <div class="guide">
+        <strong>💡 แนวทางการเขียนที่ดี</strong>
+        Soft Skills พิสูจน์ได้จากพฤติกรรมจริง — อธิบายสถานการณ์ สิ่งที่คุณทำ และผลที่ได้ ไม่ใช่แค่บอกว่า "ฉันสื่อสารเก่ง"
+      </div>
+      <div class="qq">
+        <div class="qlbl">💬 Q1 — ตัวอย่าง Soft Skills ในงานจริง</div>
+        <div class="qhint">สถานการณ์จริงที่แสดง Soft Skills เช่น นำทีมผ่านความเปลี่ยนแปลง แก้ปัญหาเร่งด่วน สื่อสารกับผู้บริหาร</div>
+        <div class="fl"><textarea id="qs1" rows="3" placeholder="ตัวอย่างสถานการณ์จริง..." oninput="updQ('soft')"></textarea></div>
+      </div>
+      <div class="qq">
+        <div class="qlbl">🤝 Q2 — การทำงานร่วมกับผู้อื่น (Collaboration)</div>
+        <div class="qhint">วิธีทำงานร่วมกับทีมหรือผู้มีส่วนได้เสีย เมื่อมีมุมมองต่างกันหรือเกิดความขัดแย้ง</div>
+        <div class="fl"><textarea id="qs2" rows="3" placeholder="วิธีที่คุณจัดการความขัดแย้ง..." oninput="updQ('soft')"></textarea></div>
+      </div>
+      <div class="qq">
+        <div class="qlbl">🌱 Q3 — แผนพัฒนา Soft Skills</div>
+        <div class="qhint">Soft Skills ใดที่อยากพัฒนาใน 12 เดือนข้างหน้า — เหตุผลและวิธีที่จะทำ</div>
+        <div class="fl"><textarea id="qs3" rows="3" placeholder="แผนพัฒนา Soft Skills..." oninput="updQ('soft')"></textarea></div>
+      </div>
+      <div class="pbar-row">
+        <span>รวม:</span>
+        <div class="pbar"><div class="pbf" id="pb-soft" style="width:0%"></div></div>
+        <span id="ct-soft" style="color:#E53E3E;font-size:11px;font-weight:700">0 / 500</span>
+      </div>
+    </div>
+
+    <!-- SKILL MAP - PART 4 -->
+    <div class="card" style="border:2px solid #9AE6B4;background:#F0FFF4;margin:14px 0;padding:16px">
+      <div style="font-size:14px;font-weight:800;color:#276749;margin-bottom:4px">🗺️ PART 4 — Skill Map &amp; แผนพัฒนา</div>
+      <div style="font-size:11px;color:#2F855A;margin-bottom:14px;font-style:italic">ระบุจุดแข็ง จุดที่ต้องพัฒนา และแผน 3 เดือน — ใช้สำหรับนำเสนอใน Workshop และแนบไว้ใน AI Profile</div>
+      <div class="qq">
+        <div class="qlbl">⭐ Top 3 จุดแข็ง (Strengths)</div>
+        <div class="qhint">ทักษะหรือความสามารถที่คุณโดดเด่น — พร้อมตัวอย่างหรือหลักฐานสั้นๆ</div>
+        <div class="fl"><textarea id="sm-top3" rows="3" placeholder="1. เช่น เก่ง Recruitment — จัดหา Executive ได้ใน 30 วัน&#10;2. ...&#10;3. ..."></textarea></div>
+      </div>
+      <div class="qq">
+        <div class="qlbl">🎯 Top 3 จุดที่ต้องพัฒนา (Gaps)</div>
+        <div class="qhint">ทักษะที่รู้ว่าต้องเพิ่มเติม — เพื่อก้าวไปสู่ระดับถัดไปหรือทำงานได้ดีขึ้น</div>
+        <div class="fl"><textarea id="sm-gaps3" rows="3" placeholder="1. เช่น HR Analytics — ยังไม่คล่อง Power BI&#10;2. ...&#10;3. ..."></textarea></div>
+      </div>
+      <div class="qq" style="margin-bottom:0">
+        <div class="qlbl">📅 แผนพัฒนา 3 เดือน (3-Month Plan)</div>
+        <div class="qhint">จะทำอะไร เรียนอะไร ขอ Feedback จากใคร — ระบุให้ชัดเจนทำได้จริง</div>
+        <div class="fl"><textarea id="sm-plan3m" rows="3" placeholder="เดือน 1: เรียน Power BI — ทำ Dashboard จริง 1 ชิ้น&#10;เดือน 2: ทดลองใช้ใน People Report ประจำเดือน&#10;เดือน 3: นำเสนอ Dashboard ต่อผู้จัดการ และ Iterate"></textarea></div>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-sec">
+      <div style="font-size:14px;font-weight:800;color:#92400E;margin-bottom:6px">💬 ประโยคสรุปตนเอง 1 ประโยค — สำหรับแชร์กลุ่มใน Workshop</div>
+      <div style="font-size:11px;color:#78350F;margin-bottom:8px;font-style:italic">Template: "ฉัน [ชื่อ] มีความเชี่ยวชาญด้าน [ทักษะเด่น] และกำลังพัฒนาตนเองใน [ด้านที่ต้องการเติบโต] เพื่อ [เป้าหมาย]"</div>
+      <div class="fl"><textarea id="ai-summary" rows="2" placeholder="เขียนประโยคสรุปที่จะพูดในกลุ่ม — ไม่เกิน 1-2 ประโยค..."></textarea></div>
+    </div>
+
+    <!-- AI TRAINING TEMPLATE -->
+    <div class="ai-sec">
+      <div class="ai-hdr">🤖 <div><div>AI Personal Assistant Training Template</div><div style="font-size:11px;font-weight:400;color:#7C3AED;margin-top:1px">กรอกให้ครบ — ระบบจะ Auto-Generate System Prompt ให้ใช้ใน Claude/ChatGPT ได้เลย</div></div></div>
+
+      <div class="ai-sub">A · บุคลิกและสไตล์การทำงาน</div>
+      <div class="ai-field"><div class="ai-lbl">ฉันเป็นคนแบบไหน?</div><div class="ai-hint">เช่น ชอบวางแผนล่วงหน้า ทำงานตามข้อมูล ชอบ brainstorm ก่อนลงมือ เน้น process หรือเน้น result</div><div class="fl"><textarea id="ai-a1" rows="2" placeholder="อธิบายบุคลิกการทำงานของคุณ..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">สไตล์การสื่อสารของฉัน</div><div class="ai-hint">เช่น ชอบตรงประเด็น ชอบ bullet point ชอบมี data สนับสนุน ชอบสื่อสารเป็น story</div><div class="fl"><textarea id="ai-a2" rows="2" placeholder="สไตล์การสื่อสารและรับข้อมูล..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">สิ่งที่ทำให้ฉันทำงานได้ดีที่สุด</div><div class="ai-hint">เช่น งานที่ต้องคิดเยอะ งานที่กระทบคนเยอะ งานที่ท้าทาย งานที่มีเป้าหมายชัด</div><div class="fl"><textarea id="ai-a3" rows="2" placeholder="บริบทที่ทำให้คุณทำงานได้ดีที่สุด..."></textarea></div></div>
+
+      <div class="ai-sub">B · บทบาทและความรับผิดชอบ</div>
+      <div class="ai-field"><div class="ai-lbl">บทบาทและหน้าที่หลักของฉันในทีม HR</div><div class="ai-hint">ระบุ scope งาน งานที่รับผิดชอบหลัก และสิ่งที่ทำให้ทีมต้องการคุณ</div><div class="fl"><textarea id="ai-b1" rows="3" placeholder="อธิบายบทบาทและความรับผิดชอบอย่างละเอียด..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">Stakeholder หลักที่ฉันทำงานด้วย</div><div class="ai-hint">เช่น CEO, Line Manager, พนักงานทุกระดับ, Finance, Vendor, ทีม HR</div><div class="fl"><textarea id="ai-b2" rows="2" placeholder="ระบุ Stakeholder หลัก..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">KPI / ตัวชี้วัดความสำเร็จหลัก</div><div class="ai-hint">งานที่ถูกวัดว่าทำได้ดีหรือไม่ — ระบุตัวเลขถ้าเป็นไปได้</div><div class="fl"><textarea id="ai-b3" rows="2" placeholder="KPI หลักของคุณ..."></textarea></div></div>
+
+      <div class="ai-sub">C · ทักษะและความเชี่ยวชาญ</div>
+      <div class="ai-field"><div class="ai-lbl">สิ่งที่ฉันรู้ดีมาก (AI ไม่ต้องอธิบายพื้นฐาน)</div><div class="ai-hint">เช่น Labor Law พื้นฐาน, Payroll Calculation, Recruitment Process — AI จะข้ามและเสริมส่วนที่ขาด</div><div class="fl"><textarea id="ai-c1" rows="2" placeholder="สิ่งที่คุณรู้ดีและไม่ต้องการให้ AI อธิบายซ้ำ..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">สิ่งที่ฉันอยากเรียนรู้เพิ่มเติม (ให้ AI ช่วยแนะนำ)</div><div class="ai-hint">เช่น HR Analytics, AI Automation, OD Frameworks — AI จะเน้นช่วยในส่วนนี้</div><div class="fl"><textarea id="ai-c2" rows="2" placeholder="สิ่งที่อยากเรียนรู้หรือพัฒนาเพิ่มเติม..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">เครื่องมือและระบบที่ฉันใช้ประจำ</div><div class="ai-hint">เช่น Google Workspace, Tiger Soft, Excel, Power BI, SAP — AI จะช่วยในบริบทของเครื่องมือที่ใช้จริง</div><div class="fl"><textarea id="ai-c3" rows="2" placeholder="เครื่องมือ/ซอฟต์แวร์ที่ใช้บ่อย..."></textarea></div></div>
+
+      <div class="ai-sub">D · งานที่ทำประจำและสิ่งที่ต้องการให้ AI ช่วย</div>
+      <div class="ai-field"><div class="ai-lbl">งานที่ทำทุกวันและทุกเดือน</div><div class="ai-hint">เช่น ตรวจ Leave Request, ปิด Payroll, จัด Training, ตอบ Email พนักงาน, ทำ Report</div><div class="fl"><textarea id="ai-d1" rows="3" placeholder="งานประจำวันและประจำเดือน..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">งานที่ต้องการให้ AI ช่วยมากที่สุด</div><div class="ai-hint">เช่น เขียน Email, Draft Policy, วิเคราะห์ข้อมูล, แปล, สรุปประชุม, ร่างสไลด์, หาข้อมูล HR</div><div class="fl"><textarea id="ai-d2" rows="3" placeholder="งานที่อยากให้ AI ช่วยลดภาระ..."></textarea></div></div>
+
+      <div class="ai-sub">E · ปัญหาและความท้าทาย</div>
+      <div class="ai-field"><div class="ai-lbl">งานที่ใช้เวลามากแต่ AI ช่วยได้</div><div class="ai-hint">เช่น เขียนเอกสารซ้ำๆ, สรุปข้อมูล, หา Benchmark, สร้าง Template — AI จะ prioritize ช่วยสิ่งเหล่านี้</div><div class="fl"><textarea id="ai-e1" rows="2" placeholder="งานที่เสียเวลาและอยากให้ AI ช่วยลด..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">ความท้าทายหลักในงานตอนนี้</div><div class="ai-hint">ปัญหาที่กำลังเผชิญ — AI จะ suggest แนวทางแก้ปัญหาที่ตรงกับบริบทของคุณ</div><div class="fl"><textarea id="ai-e2" rows="2" placeholder="ความท้าทายในงานที่กำลังเจออยู่..."></textarea></div></div>
+
+      <div class="ai-sub">F · วิธีที่ต้องการให้ AI ตอบ</div>
+      <div class="ai-field"><div class="ai-lbl">รูปแบบคำตอบที่ชอบ</div><div class="ai-hint">เช่น สั้นตรงประเด็น / อธิบายละเอียด / เป็น bullet / ให้ draft ที่แก้ต่อได้ / เป็น table</div><div class="fl"><textarea id="ai-f1" rows="2" placeholder="รูปแบบและสไตล์คำตอบที่ต้องการ..."></textarea></div></div>
+      <div class="ai-field"><div class="ai-lbl">ภาษาที่ต้องการและสิ่งที่ไม่ต้องการให้ AI ทำ</div><div class="ai-hint">เช่น ตอบเป็นภาษาไทย / อย่าอธิบายสิ่งที่รู้อยู่แล้ว / อย่าใส่ disclaimer เยอะ / อย่า assume</div><div class="fl"><textarea id="ai-f2" rows="2" placeholder="ภาษา + สิ่งที่ไม่ต้องการ..."></textarea></div></div>
+    </div>
+
+    <div style="text-align:center;margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button type="submit" class="btn btnp">💾 บันทึก Skill ของฉัน</button>
+      <button type="button" class="btn btns" onclick="loadExisting()">🔍 โหลดข้อมูลเดิมของฉัน</button>
+    </div>
+  </form>
+</div>
+</div>
+
+<!-- ======= MATRIX ======= -->
+<div class="sec" id="s-matrix">
+<div class="card">
+  <div class="ctitle">📊 Skill Matrix — Corp.HR Team</div>
+  <div class="pills">
+    <button class="pill on" onclick="fmx(this,'all')">🔍 ทั้งหมด</button>
+    <button class="pill" onclick="fmx(this,'hr')">🏢 HR Skills</button>
+    <button class="pill" onclick="fmx(this,'dig')">💻 Digital</button>
+    <button class="pill" onclick="fmx(this,'soft')">🌟 Soft Skills</button>
+  </div>
+  <div class="mwrap"><table id="mx-tbl"></table></div>
+</div>
+<div class="card" style="padding:10px 16px">
+  <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px">
+    <span class="c0" style="padding:2px 9px;border-radius:5px">0 ยังไม่มี</span>
+    <span class="c1" style="padding:2px 9px;border-radius:5px">1 เพิ่งเริ่ม</span>
+    <span class="c2" style="padding:2px 9px;border-radius:5px">2 พอรู้</span>
+    <span class="c3" style="padding:2px 9px;border-radius:5px">3 ทำได้</span>
+    <span class="c4" style="padding:2px 9px;border-radius:5px">4 ชำนาญ</span>
+    <span class="c5" style="padding:2px 9px;border-radius:5px">5 เชี่ยวชาญ</span>
+    <span style="color:var(--mu)">🔴 เส้นกรอบแดง = เกินระดับคาดหวัง (มีคำอธิบายแนบ)</span>
+  </div>
+</div>
+</div>
+
+<!-- ======= PROFILES ======= -->
+<div class="sec" id="s-profiles">
+  <div class="pgrid" id="pgrid"></div>
+</div>
+
+<!-- ======= DASHBOARD ======= -->
+<div class="sec" id="s-dashboard">
+  <div class="srow2" id="srow2"></div>
+  <div class="g2">
+    <div class="card"><div class="ctitle">🏢 HR Skills (ค่าเฉลี่ยทีม)</div><canvas id="ch-hr"></canvas></div>
+    <div class="card"><div class="ctitle">💻 Digital Skills (ค่าเฉลี่ยทีม)</div><canvas id="ch-dig"></canvas></div>
+  </div>
+  <div class="card"><div class="ctitle">🌟 Soft Skills (ค่าเฉลี่ยทีม)</div><canvas id="ch-soft"></canvas></div>
+  <div class="g2">
+    <div class="card"><div class="ctitle">⚠️ Skill Gap (ค่าเฉลี่ย &lt; 3)</div><div id="gaplist"></div></div>
+    <div class="card"><div class="ctitle">📝 ความครบถ้วนข้อมูลเชิงคุณภาพ</div><div id="qualcomp"></div></div>
+  </div>
+</div>
+
+<!-- ======= EXPECTATION MATRIX ======= -->
+<div class="sec" id="s-expect">
+<div class="card">
+  <div class="ctitle">📋 Skill Expectation Matrix — คาดหวังตาม Position × Skill</div>
+  <div class="ibox" style="margin-bottom:12px">
+    ตารางนี้แสดงระดับ Skill ที่ <strong>คาดหวัง</strong> สำหรับแต่ละตำแหน่ง — ใช้เป็นเกณฑ์อ้างอิงในการประเมินตนเองและวางแผนพัฒนา
+    หากให้คะแนนตนเองสูงกว่าระดับที่คาดหวัง ระบบจะขอคำอธิบายเพิ่มเติม
+  </div>
+  <div class="mwrap" id="exp-wrap"></div>
+</div>
+</div>
+
+<!-- ======= SETUP ======= -->
+<div class="sec" id="s-setup">
+<div class="card">
+  <div class="ctitle">⚙️ ตั้งค่าระบบ (Supabase)</div>
+
+  <div class="sbox">
+    <h3>☁️ ระบบเชื่อมต่อกับ Supabase แล้ว</h3>
+    <p>ข้อมูลทั้งหมดถูกบันทึกบนคลาวด์อัตโนมัติ — ทีมทุกคนเห็นข้อมูลเดียวกัน Real-time</p>
+    <div class="urow">
+      <button class="btn btns bsm" onclick="syncNow()">🔄 รีเฟรชข้อมูล</button>
+      <button class="btn btns bsm" onclick="doLogout()">🚪 ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <div style="margin-bottom:14px">
+    <div class="ctitle" style="margin-bottom:10px">📋 การใช้งาน</div>
+    <div class="stepc"><strong style="color:var(--a)">เข้าสู่ระบบ —</strong> ใช้ <strong>รหัสพนักงาน</strong> + <strong>PIN 6 หลัก</strong> ที่ HR ให้</div>
+    <div class="stepc"><strong style="color:var(--a)">ประเมินตนเอง —</strong> ไปแท็บ <strong>📝 กรอก Skill</strong> → ให้คะแนนทักษะ 20 ตัว → บันทึก</div>
+    <div class="stepc"><strong style="color:var(--a)">ดูข้อมูลทีม —</strong> แท็บ <strong>📊 Skill Matrix</strong> / <strong>👤 Profiles</strong> / <strong>📈 Dashboard</strong></div>
+    <div class="stepc"><strong style="color:var(--a)">เพิ่มพนักงานใหม่ —</strong> Admin เท่านั้น — ใช้ <code>admin_set_pin(emp_code, pin)</code> ใน Supabase SQL</div>
+  </div>
+
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bd)">
+    <div class="ctitle" style="margin-bottom:10px">🗑️ จัดการข้อมูล</div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap">
+      <button class="btn btnd bsm" onclick="clearAll()" id="clearBtn">🗑️ ล้างข้อมูลทั้งหมด (Admin)</button>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /main -->
+
+<!-- JUSTIFY MODAL -->
+<div class="moverlay" id="jmodal">
+  <div class="mdlg">
+    <div class="mico">⚠️</div>
+    <div class="mtitle">ต้องการคำอธิบายเพิ่มเติม</div>
+    <div class="mmsg" id="jmsg"></div>
+    <div class="mhl" id="jhl"></div>
+    <div class="mq">กรุณาอธิบายว่าคุณใช้ทักษะนี้อย่างไร และหลักฐาน/ผลงานที่แสดงว่าคุณอยู่ในระดับนี้</div>
+    <div class="mhint">ระบุตัวอย่างงานจริง สถานการณ์ที่ใช้ทักษะ และผลลัพธ์ที่ได้ — อย่างน้อย 100 ตัวอักษร</div>
+    <textarea id="jtxt" placeholder="อธิบายเหตุผลที่ให้คะแนนตนเองในระดับนี้..." oninput="updJChar()"></textarea>
+    <div class="mchar" id="jchar" style="color:#E53E3E">0 / 100 ตัวอักษร</div>
+    <div class="mbtns">
+      <button class="btn btnp" onclick="confirmJ()">✅ ยืนยัน</button>
+      <button class="btn btnd" onclick="cancelJ()">↩ ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUAL VIEW MODAL -->
+<div class="moverlay" id="qmodal" onclick="closeQM(event)">
+  <div class="mdlg" style="max-width:640px;max-height:85vh;overflow-y:auto">
+    <div class="mtitle" id="qmt"></div>
+    <div id="qmb"></div>
+    <div class="mbtns"><button class="btn btns" onclick="document.getElementById('qmodal').classList.remove('on')">✕ ปิด</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =============================================
+// SKILL DEFINITIONS
+// =============================================
+var HRS=[
+  {id:'rec',n:'Recruitment & Selection',d:'การสรรหาและคัดเลือกพนักงาน'},
+  {id:'pay',n:'Payroll Management',d:'การจัดการเงินเดือนและค่าตอบแทน'},
+  {id:'lnd',n:'Learning & Development',d:'การฝึกอบรมและพัฒนาบุคลากร'},
+  {id:'cnb',n:'Compensation & Benefits',d:'การออกแบบโครงสร้าง C&B'},
+  {id:'hris',n:'HRIS Management',d:'ระบบสารสนเทศ HR'},
+  {id:'er',n:'Employee Relations',d:'แรงงานสัมพันธ์'},
+  {id:'od',n:'Organization Development',d:'การพัฒนาองค์กรและวัฒนธรรม'},
+  {id:'hrstrat',n:'HR Strategy & Planning',d:'กลยุทธ์และแผนงาน HR'},
+];
+var DIGS=[
+  {id:'excel',n:'Excel / Google Sheets',d:'วิเคราะห์ข้อมูลด้วย Spreadsheet'},
+  {id:'pbi',n:'Power BI / Data Viz',d:'Dashboard และรายงานข้อมูล'},
+  {id:'gws',n:'Google Workspace',d:'Docs, Slides, Meet, Drive'},
+  {id:'ai',n:'AI & Automation Tools',d:'ChatGPT, Claude, Zapier, n8n'},
+  {id:'hra',n:'HR Analytics',d:'การวิเคราะห์ข้อมูล HR เชิงลึก'},
+  {id:'sys',n:'HR Software Systems',d:'SAP, Workday, Tiger Soft'},
+];
+var SOFTS=[
+  {id:'comm',n:'Communication',d:'การสื่อสารทั้งพูดและเขียน'},
+  {id:'lead',n:'Leadership',d:'การนำทีมและสร้างแรงจูงใจ'},
+  {id:'pm',n:'Project Management',d:'การบริหารจัดการโครงการ'},
+  {id:'ana',n:'Analytical Thinking',d:'การคิดวิเคราะห์และแก้ปัญหา'},
+  {id:'team',n:'Teamwork & Collaboration',d:'การทำงานเป็นทีม'},
+  {id:'adapt',n:'Adaptability',d:'ความยืดหยุ่นและการปรับตัว'},
+];
+var ALL=HRS.map(function(s){return Object.assign({},s,{cat:'hr'});})
+         .concat(DIGS.map(function(s){return Object.assign({},s,{cat:'dig'});}))
+         .concat(SOFTS.map(function(s){return Object.assign({},s,{cat:'soft'});}));
+
+var POS=[
+  {name:'พนักงาน / Officer',sh:'Staff',c:'#3182CE'},
+  {name:'Senior / Specialist',sh:'Senior',c:'#38A169'},
+  {name:'Supervisor / AM',sh:'Supv.',c:'#D69E2E'},
+  {name:'Manager',sh:'Mgr.',c:'#E8571A'},
+  {name:'Sr.Manager / Director',sh:'Dir.',c:'#9B2C2C'},
+];
+var PDESC=[
+  'คาดหวังทักษะพื้นฐาน ระดับ 2–3 ในส่วนใหญ่',
+  'สามารถทำงานอิสระ คาดหวัง 3–4 ตามความถนัด',
+  'นำทีมได้ วางแผน คาดหวัง 3–4 ในทักษะหลัก',
+  'เชิงกลยุทธ์ คาดหวัง 4–5 ในทักษะหลัก',
+  'ระดับผู้นำ คาดหวัง 4–5 ในทุกด้าน',
+];
+// [Staff, Senior, Supv, Mgr, Dir]
+var EXP={
+  rec:[2,3,4,4,5],pay:[2,3,3,4,4],lnd:[2,3,3,4,5],cnb:[1,2,3,4,5],
+  hris:[2,3,3,3,4],er:[2,3,3,4,5],od:[1,2,3,4,5],hrstrat:[1,1,2,4,5],
+  excel:[3,4,4,4,3],pbi:[1,2,3,3,3],gws:[3,4,4,4,4],ai:[2,3,3,3,3],
+  hra:[1,2,3,4,4],sys:[2,3,3,3,3],
+  comm:[3,3,4,4,5],lead:[1,2,3,4,5],pm:[2,3,3,4,4],ana:[2,3,3,4,4],
+  team:[3,4,4,4,4],adapt:[3,3,4,4,4],
+};
+
+// =============================================
+// STATE
+// =============================================
+var ratings={};
+var justifs={};
+var posLv=-1;
+var pendSk=null,pendVal=null,prevVal=null;
+var charts2={};
+
+// =============================================
+// SUPABASE CLIENT + STATE
+// =============================================
+var sb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON, {
+  auth:{persistSession:true, autoRefreshToken:true, storageKey:'km-auth'}
+});
+var CURRENT_USER = null;         // employees row ของคน login
+var DATA_CACHE   = [];           // โปรไฟล์ทุกคน (เหมือนรูปแบบเดิม)
+
+// =============================================
+// AUTH — รหัสพนักงาน + PIN 6 หลัก
+// =============================================
+function normalizeEmpCode(code){
+  // รหัสพนักงานเป็นตัวเลข 5 หลัก — pad 0 หน้าให้ครบ
+  var c = (code||'').trim();
+  if(/^[0-9]+$/.test(c)) c = c.padStart(5,'0');
+  return c.toLowerCase();
+}
+function empEmail(code){ return normalizeEmpCode(code) + '@hr.local'; }
+
+async function doLogin(ev){
+  ev.preventDefault();
+  var code = document.getElementById('loginEmp').value.trim();
+  var pin  = document.getElementById('loginPin').value.trim();
+  var errEl= document.getElementById('loginErr');
+  var btn  = document.getElementById('loginBtn');
+  errEl.classList.remove('on');
+  if(!/^[0-9]{6}$/.test(pin)){
+    errEl.textContent='PIN ต้องเป็นตัวเลข 6 หลัก'; errEl.classList.add('on'); return false;
+  }
+  btn.disabled=true; btn.textContent='กำลังเข้าสู่ระบบ...';
+  var res = await sb.auth.signInWithPassword({email: empEmail(code), password: pin});
+  btn.disabled=false; btn.textContent='เข้าสู่ระบบ';
+  if(res.error){
+    errEl.textContent='รหัสพนักงานหรือ PIN ไม่ถูกต้อง';
+    errEl.classList.add('on'); return false;
+  }
+  await onAuthed();
+  return false;
+}
+
+async function doLogout(){
+  if(!confirm('ออกจากระบบ?')) return;
+  await sb.auth.signOut();
+  CURRENT_USER=null; DATA_CACHE=[];
+  document.getElementById('loginOverlay').style.display='flex';
+  document.getElementById('userChip').style.display='none';
+  document.getElementById('loginPin').value='';
+}
+
+async function onAuthed(){
+  // โหลดโปรไฟล์คน login
+  var u = await sb.from('employees').select('*').eq('auth_user_id',(await sb.auth.getUser()).data.user.id).single();
+  if(u.error || !u.data){
+    toast('❌ ไม่พบโปรไฟล์พนักงาน');
+    await sb.auth.signOut();
+    return;
+  }
+  CURRENT_USER = u.data;
+  document.getElementById('loginOverlay').style.display='none';
+
+  // ครั้งแรกที่ login → บังคับเปลี่ยน PIN
+  if(CURRENT_USER.must_change_pin){
+    document.getElementById('pinOverlay').style.display='flex';
+    setTimeout(function(){ document.getElementById('newPin').focus(); }, 100);
+    return;
+  }
+
+  document.getElementById('userChip').style.display='flex';
+  document.getElementById('userName').textContent =
+    (CURRENT_USER.nick||CURRENT_USER.name) + (CURRENT_USER.is_admin?' (Admin)':'');
+  await reloadData();
+  if(typeof renderActive==='function') renderActive();
+}
+
+async function doChangePin(ev){
+  ev.preventDefault();
+  var p1 = document.getElementById('newPin').value.trim();
+  var p2 = document.getElementById('newPin2').value.trim();
+  var errEl = document.getElementById('pinErr');
+  var btn = document.getElementById('pinBtn');
+  errEl.classList.remove('on');
+
+  if(!/^[0-9]{6}$/.test(p1)){
+    errEl.textContent='PIN ต้องเป็นตัวเลข 6 หลัก'; errEl.classList.add('on'); return false;
+  }
+  if(p1 !== p2){
+    errEl.textContent='PIN ทั้งสองช่องไม่ตรงกัน'; errEl.classList.add('on'); return false;
+  }
+
+  btn.disabled=true; btn.textContent='กำลังบันทึก...';
+  var r = await sb.rpc('change_my_pin', {p_new_pin: p1});
+  btn.disabled=false; btn.textContent='บันทึก PIN ใหม่';
+
+  if(r.error){
+    errEl.textContent = r.error.message.indexOf('weak')>=0
+      ? 'PIN นี้เดาง่ายเกินไป กรุณาเลือกใหม่'
+      : 'บันทึกไม่สำเร็จ: '+r.error.message;
+    errEl.classList.add('on'); return false;
+  }
+
+  CURRENT_USER.must_change_pin = false;
+  document.getElementById('pinOverlay').style.display='none';
+  document.getElementById('newPin').value='';
+  document.getElementById('newPin2').value='';
+  toast('✅ ตั้ง PIN ใหม่สำเร็จ');
+
+  // ดำเนินการต่อ — แสดง chip + load data
+  document.getElementById('userChip').style.display='flex';
+  document.getElementById('userName').textContent =
+    (CURRENT_USER.nick||CURRENT_USER.name) + (CURRENT_USER.is_admin?' (Admin)':'');
+  await reloadData();
+  if(typeof renderActive==='function') renderActive();
+  return false;
+}
+
+// =============================================
+// DATA — โหลดจาก Supabase → แปลงเป็นรูปแบบเดิม
+// =============================================
+async function reloadData(){
+  var r = await sb.from('latest_assessment').select('*');
+  if(r.error){ toast('❌ โหลดข้อมูลไม่สำเร็จ: '+r.error.message); return; }
+  DATA_CACHE = (r.data||[]).map(function(row){
+    return {
+      _id:        row.employee_id,
+      _aid:       row.assessment_id,
+      name:       row.name,
+      nick:       row.nick||'',
+      pos:        row.position||'',
+      func:       row.function||'',
+      exp:        row.experience_years||0,
+      posLv:      row.position_level!=null?row.position_level:0,
+      date:       row.assessment_date||'',
+      sk:         row.skills||{},
+      justifs:    row.justifications||{},
+      qual:       row.qualitative||{hr:{},dig:{},soft:{}}
+    };
+  });
+}
+
+// API เดิมที่โค้ดที่เหลือเรียกใช้ (sync) — อ่านจาก cache
+function getData(){ return DATA_CACHE.slice(); }
+function putData(d){ DATA_CACHE = d.slice(); }
+
+// บันทึกโปรไฟล์ลง Supabase
+async function upsert(profile){
+  // 1) หา/สร้าง employees row (ใช้ name เป็นคีย์เดิม → map ผ่าน emp_code/name)
+  var empRow = DATA_CACHE.find(function(x){return x.name===profile.name;});
+  var employee_id = empRow ? empRow._id : null;
+
+  if(!employee_id){
+    // คนใหม่ — สร้าง employees (ต้องเป็น admin หรือมี emp_code)
+    if(!CURRENT_USER.is_admin){
+      toast('❌ ต้องเป็น Admin เพื่อเพิ่มพนักงานใหม่'); return;
+    }
+    var code = prompt('รหัสพนักงานของ '+profile.name+' (เช่น HR099):');
+    if(!code) return;
+    var ins = await sb.from('employees').insert({
+      emp_code: code, name: profile.name, nick: profile.nick,
+      position: profile.pos, function: profile.func,
+      experience_years: profile.exp, position_level: profile.posLv
+    }).select().single();
+    if(ins.error){ toast('❌ '+ins.error.message); return; }
+    employee_id = ins.data.id;
+  } else {
+    // อัปเดต meta พนักงาน (เผื่อแก้ตำแหน่ง/ประสบการณ์)
+    await sb.from('employees').update({
+      nick: profile.nick, position: profile.pos, function: profile.func,
+      experience_years: profile.exp, position_level: profile.posLv
+    }).eq('id', employee_id);
+  }
+
+  // 2) สร้าง assessment record ใหม่ (เก็บประวัติแต่ละครั้ง)
+  var asm = await sb.from('assessments').insert({
+    employee_id: employee_id,
+    assessment_date: profile.date || new Date().toISOString().slice(0,10),
+    skills: profile.sk||{}, justifications: profile.justifs||{},
+    qualitative: profile.qual||{}, created_by: CURRENT_USER.id
+  });
+  if(asm.error){ toast('❌ บันทึก assessment ไม่สำเร็จ: '+asm.error.message); return; }
+
+  await reloadData();
+}
+
+// เรียก reload จากปุ่ม Sync
+async function syncNow(){
+  toast('🔄 กำลังโหลดจาก Supabase...');
+  await reloadData();
+  toast('✅ ซิงค์สำเร็จ! พบ '+DATA_CACHE.length+' คน');
+  if(typeof renderActive==='function') renderActive();
+}
+
+// =============================================
+// DEMO DATA
+// =============================================
+var DEMO=[
+  {name:'สมชาย ใจดี',nick:'ชาย',pos:'Senior HR Specialist',func:'Recruitment',exp:8,date:'2026-06-01',posLv:1,
+   sk:{rec:5,pay:3,lnd:3,cnb:2,hris:4,er:4,od:3,hrstrat:3,excel:4,pbi:2,gws:5,ai:3,hra:3,sys:3,comm:5,lead:3,pm:4,ana:4,team:5,adapt:4},
+   justifs:{rec:'ทำงาน Recruitment 8+ ปี สรรหา Senior Manager 50+ คน ออกแบบ competency-based interview ให้ทีม HR'},
+   qual:{hr:{q1:'ดูแล End-to-End Recruitment ตั้งแต่ Job Posting, Screening, สัมภาษณ์, Offer ทำงานกับ Line Manager ทุกฝ่าย ใช้ ATS + LinkedIn',q2:'KPI: Time to Fill 30 วัน, Offer Acceptance 85% ผล: TTF 25 วัน Acceptance 88%',q3:'STAR: สรรหา CFO ใน 45 วัน (ปกติ 90 วัน) ใช้ Executive Search + Personal Network นำเสนอ Final 3 คนใน 3 สัปดาห์ CEO พอใจ'},
+    dig:{q1:'Excel ทุกวันสำหรับ Recruitment Pipeline Power BI สำหรับ Dashboard LinkedIn Recruiter Google Workspace ทั้งหมด',q2:'สร้าง Recruitment Dashboard ใน Power BI แสดง Real-time ลด Report Time จาก 4 ชั่วโมง เป็น Real-time',q3:'เรียน Python เพื่อ Automate Screening วางแผน Data Analytics for HR บน Coursera'},
+    soft:{q1:'นำทีม HR ใน Restructure 300 คน สื่อสาร Redundancy Package โดยไม่มีข้อร้องเรียนแรงงาน',q2:'ใช้ Active Listening ฟัง 2 ฝ่าย หา Win-Win Solution เมื่อ Manager ขัดแย้งกับ HR Policy',q3:'เรียน ICF Coaching Certification เพื่อ Coach Manager ในการพัฒนาทีม'}}},
+  {name:'สุภาพร รักงาน',nick:'แพร',pos:'HR Specialist',func:'Payroll & C&B',exp:5,date:'2026-06-01',posLv:1,
+   sk:{rec:3,pay:5,lnd:2,cnb:5,hris:3,er:2,od:2,hrstrat:2,excel:5,pbi:3,gws:4,ai:2,hra:4,sys:4,comm:4,lead:2,pm:3,ana:5,team:4,adapt:3},
+   justifs:{pay:'ดูแล Payroll 800 คน 5 ปี รวม Variable Pay, Commission, Bonus ไม่มี Error 3 ปีต่อเนื่อง'},
+   qual:{hr:{q1:'Monthly Payroll 800 คน — Basic, OT, Allowance, Deduction, ภาษี ปิดใน 3 วัน ใช้ Tiger Soft',q2:'KPI: Accuracy 99.9%, On-time 100% ทำได้ตามเป้าทุกเดือน จัด C&B Survey เพื่อ Benchmark ด้วย',q3:'พบ Bug ใน HRIS คำนวณ OT ผิด แก้ไขก่อน Payoff ประหยัดได้ 200,000 บาท'},
+    dig:{q1:'Excel ทุกวัน — VLOOKUP, SUMIF, Pivot Table Tiger Soft HRIS Power BI สำหรับ People Report',q2:'ออกแบบ Compensation Dashboard Excel+Power BI ให้ผู้บริหารเห็น Total Reward Cost แยก Department',q3:'เรียน Power BI Advanced + Python สำหรับ Automate Payroll Reconciliation'},
+    soft:{q1:'อธิบาย Deduction และ OT ให้พนักงานเข้าใจ แสดง Calculation ชัดเจน ไม่มีข้อร้องเรียน',q2:'เมื่อ Manager ไม่เห็นด้วยกับ OT ใช้ข้อมูลจริง + Policy อ้างอิง อธิบายสุภาพ',q3:'พัฒนา Presentation Skills เพื่อนำเสนอ C&B ต่อ Executive ได้มั่นใจมากขึ้น'}}},
+  {name:'วิภา มีสุข',nick:'พี',pos:'L&D Officer',func:'Learning & Development',exp:4,date:'2026-06-01',posLv:0,
+   sk:{rec:2,pay:2,lnd:5,cnb:2,hris:3,er:3,od:4,hrstrat:3,excel:3,pbi:2,gws:5,ai:4,hra:2,sys:2,comm:5,lead:4,pm:5,ana:3,team:5,adapt:5},
+   justifs:{lnd:'ออกแบบ Training 30+ หลักสูตรใน 4 ปี Satisfaction 4.7/5 Knowledge Transfer 78%',pm:'Manage L&D Project งบ 2 ล้าน คนเดียว เสร็จตรงเวลาในงบ'},
+   qual:{hr:{q1:'ออกแบบ Annual Training Plan ทำ TNA ต้นปี จัด Internal 15 + External 10+ หลักสูตรต่อปี',q2:'KPI: 40 ชม/คน/ปี, Score ≥4.5/5, Transfer Rate 70% ผล: 45 ชม, 4.7, 78%',q3:'ออกแบบ Leadership Program สำหรับ Supervisor ใหม่ Blended Learning 90 วันหลัง 85% แสดง Behavior Change'},
+    dig:{q1:'Google Workspace ทุกวัน AI Tools (Claude, ChatGPT) สร้าง Content + Assessment',q2:'สร้าง e-Learning ด้วย Canva+Google Sites ลด Onboarding จาก 5 วัน เป็น 2 วัน ประหยัด 200,000/ปี',q3:'เรียน Instructional Design + AI for L&D วางแผนสร้าง Personalized Learning Platform'},
+    soft:{q1:'นำเสนอ Learning Strategy ต่อ Executive ปีละ 2 ครั้ง ใช้ Storytelling ทำให้ได้งบ L&D เพิ่ม 30%',q2:'เมื่อ Manager ไม่ส่งพนักงาน Training ใช้ ROI Argument ได้รับความร่วมมือ',q3:'เรียน Coaching Skills เพื่อช่วย Manager ใน Post-Training Coaching'}}},
+  {name:'ธนกร สดใส',nick:'กร',pos:'HRIS Officer',func:'HRIS & Analytics',exp:3,date:'2026-06-01',posLv:0,
+   sk:{rec:2,pay:3,lnd:2,cnb:3,hris:5,er:2,od:2,hrstrat:2,excel:5,pbi:5,gws:4,ai:5,hra:5,sys:5,comm:3,lead:2,pm:4,ana:5,team:3,adapt:4},
+   justifs:{hris:'ดูแล+Customize HRIS ทั้งระบบ Integration กับ Payroll ออกแบบ Workflow Automation ลด Manual 60%',ai:'ใช้ AI ทุกวัน Coding+Analysis+Automation มี Portfolio Projects',hra:'สร้าง People Analytics Dashboard ที่ใช้ทุกเดือน Turnover Prediction+Skill Gap+Workforce Planning'},
+   qual:{hr:{q1:'ดูแล HRIS: Master Data, Workflow Automation, Integration กับ Payroll+Time Attendance ทำ Maintenance+User Training',q2:'KPI: Uptime 99.5%, Satisfaction 4.2/5, Accuracy 99.9% ทำ Data Migration จาก Legacy ลด Processing 40%',q3:'Build HR Analytics Dashboard ใน Power BI 3 เดือน คนเดียว ผู้บริหารมี Real-time Data ตัดสินใจเร็วขึ้น'},
+    dig:{q1:'Power BI ทุกวัน Python Data Processing Excel Advanced Google Apps Script AI Tools ทุกวัน',q2:'สร้าง Turnover Prediction Model Python Accuracy 72% Predict 3 เดือนล่วงหน้า ทำ Retention Plan ได้ก่อน',q3:'เรียน ML for HR + Advanced SQL Build AI Chatbot HR Helpdesk ใน 6 เดือน'},
+    soft:{q1:'Translate Technical Data เป็น Business Insights นำเสนอ Findings ด้วย Storytelling ได้ผล',q2:'ใช้ Prioritization Matrix อธิบาย Trade-off เมื่อ Stakeholder ต้องการสิ่งขัดแย้งกัน',q3:'พัฒนา Executive Communication เพื่อนำเสนอ Analytics ต่อ Board'}}},
+  {name:'อรทัย แก้วมาก',nick:'ออย',pos:'HR Officer',func:'Employee Relations',exp:2,date:'2026-06-01',posLv:0,
+   sk:{rec:3,pay:2,lnd:3,cnb:2,hris:2,er:4,od:3,hrstrat:1,excel:3,pbi:1,gws:4,ai:2,hra:2,sys:2,comm:4,lead:2,pm:2,ana:3,team:4,adapt:4},
+   justifs:{er:'ดูแล ER 2 ปี จัดการ Grievance 30+ เคส ทั้งหมด Resolve ไม่มีฟ้องร้อง Engagement Score เพิ่ม 8%'},
+   qual:{hr:{q1:'ดูแล ER: Grievance Handling, Disciplinary, Welfare Management, Engagement Activities จัด CSR+Team Building 4 ครั้ง/ปี',q2:'KPI: Resolution Rate 95% ใน 14 วัน, Satisfaction ≥3.8/5, Discipline Case ลด 10% ผล: 98% Resolution, 4.0 Score',q3:'จัดการ Sensitive Case Harassment Investigation Fair Process ทั้ง 2 ฝ่าย เสร็จ 10 วัน ทุกฝ่ายพอใจ'},
+    dig:{q1:'Google Workspace ทุกวัน Excel Track Grievance Cases + Welfare Budget Line Manager Portal',q2:'สร้าง Grievance Tracking ใน Google Sheets Auto-notify เมื่อ Deadline ใกล้ ลด Overdue จาก 15% เป็น 2%',q3:'อยากเรียน Power BI เพื่อ Visualize Engagement Data และ HR Analytics'},
+    soft:{q1:'ใช้ Empathy ฟังพนักงาน ช่วยประสาน EAP ให้พนักงานที่มีปัญหาครอบครัวกระทบงาน',q2:'เป็น Mediator ใช้ Structured Mediation หา Common Ground ตกลง Action Plan ร่วมกัน',q3:'เรียน Professional Coaching + Labor Law ลึกขึ้น เรียน HR Certificate ปีนี้'}}},
+];
+
+function loadDemo(){putData(DEMO);toast('✅ โหลด Demo Data 5 คน สำเร็จ!');renderActive();}
+async function clearAll(){
+  if(!CURRENT_USER||!CURRENT_USER.is_admin){toast('❌ Admin เท่านั้น');return;}
+  if(!confirm('ล้าง assessment ทั้งหมด? (พนักงานยังอยู่)')) return;
+  var r = await sb.from('assessments').delete().not('id','is',null);
+  if(r.error){toast('❌ '+r.error.message);return;}
+  await reloadData();
+  toast('🗑️ ล้าง assessment ทั้งหมดแล้ว');
+  renderActive();
+}
+
+// =============================================
+// FORM INIT
+// =============================================
+function buildRows(cid,skills){
+  var html='';
+  skills.forEach(function(s){
+    html+='<div class="srow">';
+    html+='<div class="sinfo"><div class="sname">'+s.n+'</div><div class="sdesc">'+s.d+'</div></div>';
+    html+='<div class="sright">';
+    html+='<div class="ebadge" id="eb-'+s.id+'">เลือก Level ก่อน</div>';
+    html+='<div class="stars">';
+    for(var n=1;n<=5;n++){
+      html+='<button type="button" class="star" id="st-'+s.id+'-'+n+'" onclick="rate(\''+s.id+'\','+n+')">'+n+'</button>';
+    }
+    html+='</div></div></div>';
+  });
+  document.getElementById(cid).innerHTML=html;
+}
+
+function initForm(){
+  document.getElementById('fd').value=new Date().toLocaleDateString('th-TH');
+  buildRows('hr-rows',HRS);
+  buildRows('dig-rows',DIGS);
+  buildRows('soft-rows',SOFTS);
+}
+
+// =============================================
+// POSITION LEVEL
+// =============================================
+function onPosChange(){
+  var v=document.getElementById('fpl').value;
+  posLv=v===''?-1:parseInt(v);
+  if(posLv<0){
+    document.getElementById('pldesc').textContent='เลือกระดับตำแหน่งเพื่อดูคะแนนที่คาดหวังในแต่ละทักษะ';
+    ALL.forEach(function(s){
+      var b=document.getElementById('eb-'+s.id);
+      if(b){b.className='ebadge';b.textContent='เลือก Level ก่อน';}
+    });
+    return;
+  }
+  document.getElementById('pldesc').textContent=PDESC[posLv];
+  ALL.forEach(function(s){
+    var b=document.getElementById('eb-'+s.id);
+    if(!b)return;
+    var ex=EXP[s.id][posLv];
+    b.className='ebadge c'+ex;
+    b.textContent='คาดหวัง: '+ex;
+  });
+}
+
+// =============================================
+// STAR RATING
+// =============================================
+function rate(id,val){
+  // If above expectation and position selected → show modal
+  if(posLv>=0){
+    var ex=EXP[id][posLv];
+    if(val>ex){
+      pendSk=id;pendVal=val;prevVal=ratings[id]||0;
+      showJModal(id,val,ex);
+      return;
+    }
+  }
+  applyRating(id,val);
+}
+
+function applyRating(id,val){
+  // Toggle off if same
+  if(ratings[id]===val){
+    delete ratings[id];
+    for(var n=1;n<=5;n++){var b=document.getElementById('st-'+id+'-'+n);if(b)b.className='star';}
+    return;
+  }
+  ratings[id]=val;
+  // Fill stars 1..val with color, rest plain
+  for(var n=1;n<=5;n++){
+    var b=document.getElementById('st-'+id+'-'+n);
+    if(b)b.className=n<=val?'star s'+val:'star';
+  }
+  updHrDot();updDigDot();updSoftDot();
+}
+
+function setRatingsFromSk(sk){
+  ratings={};
+  ALL.forEach(function(s){ratings[s.id]=sk[s.id]||0;});
+  ALL.forEach(function(s){
+    var v=sk[s.id]||0;
+    for(var n=1;n<=5;n++){
+      var b=document.getElementById('st-'+s.id+'-'+n);
+      if(b)b.className=n<=v&&v>0?'star s'+v:'star';
+    }
+  });
+  updHrDot();updDigDot();updSoftDot();
+}
+
+function updHrDot(){
+  var any=HRS.some(function(s){return (ratings[s.id]||0)>0;});
+  var d=document.getElementById('d-hr');if(d)d.style.background=any?'#68D391':'#E2E8F0';
+}
+function updDigDot(){
+  var any=DIGS.some(function(s){return (ratings[s.id]||0)>0;});
+  var d=document.getElementById('d-dig');if(d)d.style.background=any?'#68D391':'#E2E8F0';
+}
+function updSoftDot(){
+  var any=SOFTS.some(function(s){return (ratings[s.id]||0)>0;});
+  var d=document.getElementById('d-soft');if(d)d.style.background=any?'#68D391':'#E2E8F0';
+}
+
+// =============================================
+// JUSTIFY MODAL
+// =============================================
+function showJModal(id,val,ex){
+  var sk=ALL.find(function(s){return s.id===id;});
+  var posName=posLv>=0?POS[posLv].name:'';
+  document.getElementById('jmsg').textContent='คุณให้คะแนน "'+sk.n+'" ที่ระดับ '+val+' ซึ่งสูงกว่าระดับที่คาดหวัง';
+  document.getElementById('jhl').textContent='ตำแหน่ง '+posName+' คาดหวังระดับ '+ex+' — คุณให้ตนเองระดับ '+val;
+  document.getElementById('jtxt').value=justifs[id]||'';
+  updJChar();
+  document.getElementById('jmodal').classList.add('on');
+}
+function updJChar(){
+  var len=document.getElementById('jtxt').value.length;
+  var el=document.getElementById('jchar');
+  el.textContent=len+' / 100 ตัวอักษร';
+  el.style.color=len>=100?'#276749':'#E53E3E';
+}
+function confirmJ(){
+  var txt=document.getElementById('jtxt').value.trim();
+  if(txt.length<100){toast('❌ กรุณาอธิบายอย่างน้อย 100 ตัวอักษร');return;}
+  justifs[pendSk]=txt;
+  applyRating(pendSk,pendVal);
+  document.getElementById('jmodal').classList.remove('on');
+  pendSk=null;pendVal=null;prevVal=null;
+  toast('✅ บันทึกคำอธิบายแล้ว');
+}
+function cancelJ(){
+  // Restore previous rating visually
+  if(prevVal>0){
+    ratings[pendSk]=prevVal;
+    for(var n=1;n<=5;n++){var b=document.getElementById('st-'+pendSk+'-'+n);if(b)b.className=n<=prevVal?'star s'+prevVal:'star';}
+  } else {
+    delete ratings[pendSk];
+    for(var n=1;n<=5;n++){var b=document.getElementById('st-'+pendSk+'-'+n);if(b)b.className='star';}
+  }
+  document.getElementById('jmodal').classList.remove('on');
+  pendSk=null;pendVal=null;prevVal=null;
+}
+
+// =============================================
+// QUALITATIVE PROGRESS
+// =============================================
+var QMIN=500;
+function getQLen(cat){
+  var ids={hr:['qh1','qh2','qh3'],dig:['qd1','qd2','qd3'],soft:['qs1','qs2','qs3']}[cat];
+  return ids.reduce(function(a,id){var el=document.getElementById(id);return a+(el?el.value.trim().length:0);},0);
+}
+function updQ(cat){
+  var len=getQLen(cat);
+  var pct=Math.min(100,Math.round(len/QMIN*100));
+  var pb=document.getElementById('pb-'+cat);if(pb)pb.style.width=pct+'%';
+  var ct=document.getElementById('ct-'+cat);
+  if(ct){ct.textContent=len+' / '+QMIN;ct.style.color=len>=QMIN?'#276749':'#E53E3E';}
+  var dot=document.getElementById('d-q'+cat);
+  if(dot)dot.style.background=len>=QMIN?'#68D391':'#E2E8F0';
+}
+function chkInfo(){
+  var ok=!!(document.getElementById('fn').value.trim()&&document.getElementById('fp').value.trim());
+  var d=document.getElementById('d-info');if(d)d.style.background=ok?'#68D391':'#E2E8F0';
+}
+
+// =============================================
+// LOAD EXISTING
+// =============================================
+function loadExisting(){
+  var name=document.getElementById('fn').value.trim();
+  if(!name){toast('❌ กรอกชื่อก่อน แล้วกดโหลด');return;}
+  var p=getData().find(function(x){return x.name===name;});
+  if(!p){toast('❌ ไม่พบข้อมูลชื่อนี้ในระบบ');return;}
+  document.getElementById('fk').value=p.nick||'';
+  document.getElementById('fp').value=p.pos||'';
+  document.getElementById('ff').value=p.func||'';
+  document.getElementById('fe').value=p.exp||0;
+  if(p.posLv!==undefined&&p.posLv>=0){document.getElementById('fpl').value=p.posLv;onPosChange();}
+  setRatingsFromSk(p.sk||{});
+  justifs=JSON.parse(JSON.stringify(p.justifs||{}));
+  // Fill qualitative
+  var qmap={hr:['qh1','qh2','qh3'],dig:['qd1','qd2','qd3'],soft:['qs1','qs2','qs3']};
+  var cats=['hr','dig','soft'];
+  cats.forEach(function(cat){
+    if(p.qual&&p.qual[cat]){
+      qmap[cat].forEach(function(id,i){
+        var el=document.getElementById(id);
+        if(el)el.value=p.qual[cat]['q'+(i+1)]||'';
+      });
+      updQ(cat);
+    }
+  });
+  // Fill Skill Map
+  var smMap={top3:'sm-top3',gaps3:'sm-gaps3',plan3m:'sm-plan3m'};
+  var smData=p.skillMap||{};
+  Object.keys(smMap).forEach(function(k){var el=document.getElementById(smMap[k]);if(el)el.value=smData[k]||'';});
+  // Fill Summary
+  var sumEl=document.getElementById('ai-summary');if(sumEl)sumEl.value=p.summary1||'';
+  // Fill AI Template
+  var aiKeys=['a1','a2','a3','b1','b2','b3','c1','c2','c3','d1','d2','e1','e2','f1','f2'];
+  var aiSrc=p.ai||{};
+  aiKeys.forEach(function(k){var el=document.getElementById('ai-'+k);if(el)el.value=aiSrc[k]||'';});
+  toast('✅ โหลดข้อมูลเดิมสำเร็จ');
+}
+
+// =============================================
+// FORM SUBMIT
+// =============================================
+function submitForm(e){
+  e.preventDefault();
+  var name=document.getElementById('fn').value.trim();
+  if(!name){toast('❌ กรุณากรอกชื่อ');return;}
+  if(posLv<0){toast('❌ กรุณาเลือกระดับตำแหน่งก่อน');return;}
+  // Validate qualitative
+  var qerr=[];
+  var qnames={hr:'HR Skills',dig:'Digital Skills',soft:'Soft Skills'};
+  ['hr','dig','soft'].forEach(function(cat){
+    if(getQLen(cat)<QMIN)qerr.push(qnames[cat]);
+  });
+  if(qerr.length>0){toast('❌ กรุณากรอกข้อมูลเชิงคุณภาพ '+qerr.join(', ')+' ให้ครบ 500 ตัวอักษร');return;}
+
+  var sk={};ALL.forEach(function(s){sk[s.id]=ratings[s.id]||0;});
+  var qual={
+    hr:{q1:document.getElementById('qh1').value.trim(),q2:document.getElementById('qh2').value.trim(),q3:document.getElementById('qh3').value.trim()},
+    dig:{q1:document.getElementById('qd1').value.trim(),q2:document.getElementById('qd2').value.trim(),q3:document.getElementById('qd3').value.trim()},
+    soft:{q1:document.getElementById('qs1').value.trim(),q2:document.getElementById('qs2').value.trim(),q3:document.getElementById('qs3').value.trim()},
+  };
+  var skillMap={
+    top3:(document.getElementById('sm-top3')||{}).value||'',
+    gaps3:(document.getElementById('sm-gaps3')||{}).value||'',
+    plan3m:(document.getElementById('sm-plan3m')||{}).value||'',
+  };
+  var summary1=(document.getElementById('ai-summary')||{}).value||'';
+  var aiData={
+    a1:(document.getElementById('ai-a1')||{}).value||'',
+    a2:(document.getElementById('ai-a2')||{}).value||'',
+    a3:(document.getElementById('ai-a3')||{}).value||'',
+    b1:(document.getElementById('ai-b1')||{}).value||'',
+    b2:(document.getElementById('ai-b2')||{}).value||'',
+    b3:(document.getElementById('ai-b3')||{}).value||'',
+    c1:(document.getElementById('ai-c1')||{}).value||'',
+    c2:(document.getElementById('ai-c2')||{}).value||'',
+    c3:(document.getElementById('ai-c3')||{}).value||'',
+    d1:(document.getElementById('ai-d1')||{}).value||'',
+    d2:(document.getElementById('ai-d2')||{}).value||'',
+    e1:(document.getElementById('ai-e1')||{}).value||'',
+    e2:(document.getElementById('ai-e2')||{}).value||'',
+    f1:(document.getElementById('ai-f1')||{}).value||'',
+    f2:(document.getElementById('ai-f2')||{}).value||'',
+  };
+  upsert({
+    name:name,nick:document.getElementById('fk').value.trim(),
+    pos:document.getElementById('fp').value.trim(),
+    func:document.getElementById('ff').value,
+    exp:parseInt(document.getElementById('fe').value)||0,
+    posLv:posLv,date:new Date().toISOString().split('T')[0],
+    sk:sk,justifs:JSON.parse(JSON.stringify(justifs)),qual:qual,
+    skillMap:skillMap,summary1:summary1,ai:aiData,
+  });
+  toast('✅ บันทึก Skill + ข้อมูลเชิงคุณภาพสำเร็จ! (บันทึกลง Supabase)');
+  resetForm();
+}
+
+function resetForm(){
+  document.getElementById('kmform').reset();
+  document.getElementById('fd').value=new Date().toLocaleDateString('th-TH');
+  document.getElementById('fpl').value='';
+  posLv=-1;ratings={};justifs={};
+  ALL.forEach(function(s){for(var n=1;n<=5;n++){var b=document.getElementById('st-'+s.id+'-'+n);if(b)b.className='star';}});
+  ALL.forEach(function(s){var b=document.getElementById('eb-'+s.id);if(b){b.className='ebadge';b.textContent='เลือก Level ก่อน';}});
+  ['hr','dig','soft'].forEach(function(cat){updQ(cat);});
+  document.getElementById('pldesc').textContent='เลือกระดับตำแหน่งเพื่อดูคะแนนที่คาดหวังในแต่ละทักษะ';
+  ['d-info','d-hr','d-dig','d-soft','d-qhr','d-qdig','d-qsoft'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.background='#E2E8F0';
+  });
+  // Clear new fields
+  ['sm-top3','sm-gaps3','sm-plan3m','ai-summary','ai-a1','ai-a2','ai-a3','ai-b1','ai-b2','ai-b3','ai-c1','ai-c2','ai-c3','ai-d1','ai-d2','ai-e1','ai-e2','ai-f1','ai-f2'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.value='';
+  });
+}
+
+// =============================================
+// SKILL MATRIX
+// =============================================
+var mxCat='all';
+function fmx(btn,cat){
+  document.querySelectorAll('.pills .pill').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  mxCat=cat;
+  renderMatrix();
+}
+function renderMatrix(){
+  var d=getData();
+  var tbl=document.getElementById('mx-tbl');
+  if(!d.length){tbl.innerHTML='<tr><td class="empty">ยังไม่มีข้อมูล</td></tr>';return;}
+  var sk=mxCat==='all'?ALL:
+         mxCat==='hr'?HRS.map(function(s){return Object.assign({},s,{cat:'hr'});})  :
+         mxCat==='dig'?DIGS.map(function(s){return Object.assign({},s,{cat:'dig'});}) :
+         SOFTS.map(function(s){return Object.assign({},s,{cat:'soft'});});
+
+  var h='<thead><tr><th style="text-align:left;min-width:130px">ชื่อ</th>';
+  sk.forEach(function(s){h+='<th style="max-width:75px;white-space:normal;font-size:10px;line-height:1.3">'+s.n+'</th>';});
+  h+='<th>เฉลี่ย</th></tr></thead><tbody>';
+  d.forEach(function(p){
+    var avg=(sk.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/sk.length).toFixed(1);
+    var plb=p.posLv>=0&&p.posLv!==undefined?POS[p.posLv].sh:'';
+    h+='<tr><td class="tdn">'+p.name+'<br><span style="font-size:10px;color:var(--mu);font-weight:400">'+p.pos+'</span>';
+    if(plb)h+=' <span style="font-size:9px;background:#EEF2FF;color:var(--p);padding:1px 5px;border-radius:6px">'+plb+'</span>';
+    h+='</td>';
+    sk.forEach(function(s){
+      var v=p.sk[s.id]||0;
+      var abv=p.posLv>=0&&EXP[s.id]&&v>EXP[s.id][p.posLv]?'style="outline:2px solid #E53E3E;outline-offset:-2px"':'';
+      h+='<td class="c'+v+'" '+abv+' title="'+s.n+': '+v+'">'+(v||'—')+'</td>';
+    });
+    h+='<td class="tda">'+avg+'</td></tr>';
+  });
+  // Avg row
+  h+='<tr class="trave"><td class="tdn" style="font-weight:800">📊 ค่าเฉลี่ยทีม</td>';
+  sk.forEach(function(s){
+    var a=(d.reduce(function(x,p){return x+(p.sk[s.id]||0);},0)/d.length).toFixed(1);
+    var an=parseFloat(a);
+    var cl=an<2?'c1':an<3?'c2':an<4?'c3':'c4';
+    h+='<td class="'+cl+'">'+a+'</td>';
+  });
+  var ta=(d.reduce(function(x,p){return x+sk.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/sk.length;},0)/d.length).toFixed(1);
+  h+='<td class="tda">'+ta+'</td></tr></tbody>';
+  tbl.innerHTML=h;
+}
+
+// =============================================
+// PROFILES
+// =============================================
+function renderProfiles(){
+  var d=getData();
+  var g=document.getElementById('pgrid');
+  if(!d.length){g.innerHTML='<div class="card empty" style="grid-column:1/-1">ยังไม่มีข้อมูล</div>';return;}
+  g.innerHTML=d.map(function(p,idx){
+    var hrA=(HRS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/HRS.length).toFixed(1);
+    var dgA=(DIGS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/DIGS.length).toFixed(1);
+    var sfA=(SOFTS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/SOFTS.length).toFixed(1);
+    var init=p.name.split(' ').map(function(x){return x[0];}).join('').slice(0,2);
+    var top=ALL.filter(function(s){return (p.sk[s.id]||0)>=4;}).sort(function(a,b){return (p.sk[b.id]||0)-(p.sk[a.id]||0);}).slice(0,4);
+    var pl=p.posLv>=0&&p.posLv!==undefined?POS[p.posLv]:{name:'',c:'#999'};
+    var bars=[{l:'🏢 HR',v:hrA,c:'#4299E1'},{l:'💻 Digital',v:dgA,c:'#38A169'},{l:'🌟 Soft',v:sfA,c:'#ED8936'}];
+    var snip=p.qual&&p.qual.hr&&p.qual.hr.q1?p.qual.hr.q1.substring(0,80)+'...':'ยังไม่มีข้อมูลเชิงคุณภาพ';
+    var hasJ=p.justifs&&Object.keys(p.justifs).length>0;
+    var html='<div class="pcard">';
+    html+='<div class="phead"><div class="av">'+init+'</div><div>';
+    html+='<div class="pname">'+p.name+(p.nick?' ('+p.nick+')':'')+'</div>';
+    html+='<div class="prole">'+p.pos+' · '+p.exp+' ปี</div>';
+    if(pl.name)html+='<div style="font-size:10px;padding:1px 7px;border-radius:7px;display:inline-block;margin-top:3px;font-weight:700;background:'+pl.c+'20;color:'+pl.c+'">'+pl.name+'</div>';
+    html+='</div></div>';
+    bars.forEach(function(b){
+      html+='<div class="br"><div class="brl"><span>'+b.l+'</span><span style="font-weight:800;color:'+b.c+'">'+b.v+'/5</span></div>';
+      html+='<div class="brt"><div class="brf" style="width:'+(b.v*20)+'%;background:'+b.c+'"></div></div></div>';
+    });
+    if(top.length){html+='<div class="pdiv"></div><div style="font-size:11px;font-weight:700;color:var(--mu);margin-bottom:4px">⭐ ทักษะเด่น (4+)</div><div>';
+      top.forEach(function(s){html+='<span class="tag">'+s.n+'</span>';});html+='</div>';}
+    if(hasJ)html+='<div style="margin-top:7px"><span style="background:#FFF3E0;color:#C05621;padding:2px 8px;border-radius:7px;font-size:10px;font-weight:700">⚠️ มีคำอธิบายทักษะสูงกว่าคาดหวัง</span></div>';
+    html+='<div class="pdiv"></div>';
+    html+='<div style="font-size:11px;color:var(--mu);font-weight:700;margin-bottom:4px">📝 ข้อมูลเชิงคุณภาพ</div>';
+    html+='<div style="font-size:11px;color:var(--mu);font-style:italic;line-height:1.6">"'+snip+'"</div>';
+    html+='<button class="btn btns bsm" style="margin-top:9px;width:100%;font-size:11px" onclick="showQModal('+idx+')">📖 ดูรายละเอียดทั้งหมด</button>';
+    html+='<button class="rpt-btn" onclick="exportProfile('+idx+')" style="margin-top:6px">📄 Export PDF Profile (แนบ ChatGPT)</button>';
+    html+='<div style="margin-top:7px;font-size:11px;color:#A0AEC0">อัปเดต: '+p.date+'</div>';
+    html+='</div>';
+    return html;
+  }).join('');
+}
+
+function showQModal(idx){
+  var p=getData()[idx];if(!p)return;
+  document.getElementById('qmt').textContent='📝 '+p.name+' — ข้อมูลเชิงคุณภาพ';
+  var sections={
+    hr:{title:'🏢 HR Functional Skills',qs:['กระบวนการทำงาน','เป้าหมายและผลลัพธ์','ความสำเร็จและบทเรียน']},
+    dig:{title:'💻 Digital Skills',qs:['เครื่องมือที่ใช้','Project สร้างผลลัพธ์','แผนพัฒนา Digital']},
+    soft:{title:'🌟 Soft Skills',qs:['ตัวอย่าง Soft Skills','การทำงานร่วมกัน','แผนพัฒนา Soft Skills']},
+  };
+  var html='';
+  ['hr','dig','soft'].forEach(function(cat){
+    if(!p.qual||!p.qual[cat])return;
+    html+='<div style="font-weight:800;color:var(--p);margin:12px 0 8px">'+sections[cat].title+'</div>';
+    sections[cat].qs.forEach(function(q,i){
+      var ans=p.qual[cat]['q'+(i+1)]||'—';
+      html+='<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:var(--mu);margin-bottom:3px">Q'+(i+1)+': '+q+'</div>';
+      html+='<div style="font-size:13px;line-height:1.7;background:#F7FAFC;border-radius:7px;padding:9px 11px">'+ans+'</div></div>';
+    });
+  });
+  if(p.justifs&&Object.keys(p.justifs).length>0){
+    html+='<div style="font-weight:800;color:#C05621;margin:12px 0 8px">⚠️ คำอธิบายทักษะสูงกว่าคาดหวัง</div>';
+    Object.keys(p.justifs).forEach(function(id){
+      var sk2=ALL.find(function(s){return s.id===id;});
+      html+='<div style="margin-bottom:8px"><div style="font-size:11px;font-weight:700;color:var(--mu);margin-bottom:3px">'+(sk2?sk2.n:id)+':</div>';
+      html+='<div style="font-size:13px;line-height:1.7;background:#FFF5F5;border-radius:7px;padding:9px 11px;border-left:3px solid #FC8181">'+p.justifs[id]+'</div></div>';
+    });
+  }
+  document.getElementById('qmb').innerHTML=html;
+  document.getElementById('qmodal').classList.add('on');
+}
+function closeQM(e){if(e.target===document.getElementById('qmodal'))document.getElementById('qmodal').classList.remove('on');}
+
+// =============================================
+// DASHBOARD
+// =============================================
+function renderDash(){
+  var d=getData();
+  var sr=document.getElementById('srow2');
+  if(!d.length){sr.innerHTML='<div class="card empty" style="grid-column:1/-1">ยังไม่มีข้อมูล</div>';return;}
+  var avgExp=(d.reduce(function(a,p){return a+p.exp;},0)/d.length).toFixed(1);
+  var overAll=(d.reduce(function(a,p){return a+ALL.reduce(function(x,s){return x+(p.sk[s.id]||0);},0)/ALL.length;},0)/d.length).toFixed(1);
+  var experts=d.reduce(function(a,p){return a+ALL.filter(function(s){return (p.sk[s.id]||0)>=4;}).length;},0);
+  var qualDone=d.filter(function(p){
+    return p.qual&&['hr','dig','soft'].every(function(c){
+      return p.qual[c]&&Object.values(p.qual[c]).join(' ').trim().length>=QMIN;
+    });
+  }).length;
+
+  sr.innerHTML=
+    '<div class="stat"><div class="svl">'+d.length+'</div><div class="slb">👥 สมาชิกทีม</div></div>'+
+    '<div class="stat" style="border-top-color:var(--a)"><div class="svl" style="color:var(--a)">'+avgExp+'</div><div class="slb">📅 ปีประสบการณ์เฉลี่ย</div></div>'+
+    '<div class="stat" style="border-top-color:#276749"><div class="svl" style="color:#276749">'+overAll+'</div><div class="slb">⭐ คะแนนเฉลี่ยทีม (จาก 5)</div></div>'+
+    '<div class="stat" style="border-top-color:var(--pu)"><div class="svl" style="color:var(--pu)">'+qualDone+'/'+d.length+'</div><div class="slb">📝 ข้อมูลคุณภาพครบ</div></div>';
+
+  function avgSkills(skills){return skills.map(function(s){return +(d.reduce(function(a,p){return a+(p.sk[s.id]||0);},0)/d.length).toFixed(2);});}
+  function mkChart(id,labels,vals,color){
+    if(charts2[id])charts2[id].destroy();
+    charts2[id]=new Chart(document.getElementById(id),{type:'bar',
+      data:{labels:labels,datasets:[{data:vals,backgroundColor:color+'BB',borderColor:color,borderWidth:2,borderRadius:7}]},
+      options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{min:0,max:5,ticks:{stepSize:1}},y:{ticks:{font:{size:11}}}},responsive:true}
+    });
+  }
+  mkChart('ch-hr',HRS.map(function(s){return s.n;}),avgSkills(HRS),'#4299E1');
+  mkChart('ch-dig',DIGS.map(function(s){return s.n;}),avgSkills(DIGS),'#38A169');
+  mkChart('ch-soft',SOFTS.map(function(s){return s.n;}),avgSkills(SOFTS),'#ED8936');
+
+  var gaps=ALL.map(function(s){return Object.assign({},s,{a:d.reduce(function(x,p){return x+(p.sk[s.id]||0);},0)/d.length});})
+             .filter(function(s){return s.a<3;}).sort(function(a,b){return a.a-b.a;});
+  var gl=document.getElementById('gaplist');
+  if(!gaps.length){gl.innerHTML='<p style="color:#276749;font-weight:800">✅ ไม่พบ Skill Gap ที่มีนัยสำคัญ!</p>';}
+  else{
+    gl.innerHTML=gaps.map(function(s){
+      var cc={hr:'#4299E1',dig:'#38A169',soft:'#ED8936'}[s.cat];
+      var cl={hr:'HR',dig:'Digital',soft:'Soft'}[s.cat];
+      return '<div class="grow"><span class="cbadge" style="background:'+cc+'20;color:'+cc+'">'+cl+'</span>'+
+        '<span style="flex:1">'+s.n+'</span>'+
+        '<div class="gbt"><div class="gbf" style="width:'+(s.a/5*100)+'%"></div></div>'+
+        '<span style="font-weight:800;color:#9B2C2C;min-width:28px;text-align:right">'+s.a.toFixed(1)+'</span></div>';
+    }).join('');
+  }
+
+  var qc=document.getElementById('qualcomp');
+  qc.innerHTML=d.map(function(p){
+    var pcts=['hr','dig','soft'].map(function(cat){
+      if(!p.qual||!p.qual[cat])return 0;
+      return Math.min(100,Math.round(Object.values(p.qual[cat]).join(' ').trim().length/QMIN*100));
+    });
+    var avg2=Math.round(pcts.reduce(function(a,b){return a+b;},0)/3);
+    var clr=avg2>=100?'#276749':'#C05621';
+    return '<div style="margin-bottom:9px">'+
+      '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">'+
+      '<span style="font-weight:700">'+p.name+'</span>'+
+      '<span style="color:'+clr+';font-weight:700">'+avg2+'%</span></div>'+
+      '<div style="background:#EDF2F7;border-radius:4px;height:7px;overflow:hidden">'+
+      '<div style="width:'+avg2+'%;height:100%;background:'+(avg2>=100?'#68D391':'#F6AD55')+';border-radius:4px;transition:width .4s"></div></div></div>';
+  }).join('');
+}
+
+// =============================================
+// EXPECTATION MATRIX
+// =============================================
+function renderExpect(){
+  var wrap=document.getElementById('exp-wrap');
+  var sections=[{title:'🏢 HR Functional Skills',skills:HRS},{title:'💻 Digital Skills',skills:DIGS},{title:'🌟 Soft Skills',skills:SOFTS}];
+  var html='';
+  sections.forEach(function(sec){
+    html+='<div style="font-size:13px;font-weight:800;color:var(--p);padding:10px 0 6px;border-bottom:2px solid #FED7AA;margin-top:14px">'+sec.title+'</div>';
+    html+='<div class="mwrap"><table><thead><tr><th style="text-align:left;min-width:160px">ทักษะ</th>';
+    POS.forEach(function(pl){html+='<th style="background:'+pl.c+';min-width:90px">'+pl.sh+'<br><span style="font-size:9px;opacity:.85;font-weight:400">'+pl.name.split('/')[0].trim()+'</span></th>';});
+    html+='</tr></thead><tbody>';
+    sec.skills.forEach(function(s){
+      html+='<tr><td class="tdn">'+s.n+'<br><span style="font-size:10px;color:var(--mu);font-weight:400">'+s.d+'</span></td>';
+      POS.forEach(function(pl,i){var ex=EXP[s.id][i];html+='<td class="c'+ex+'">'+ex+'</td>';});
+      html+='</tr>';
+    });
+    html+='</tbody></table></div>';
+  });
+  wrap.innerHTML=html;
+}
+
+// =============================================
+// NAVIGATION
+// =============================================
+function go(name,btn){
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('on');});
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('s-'+name).classList.add('on');
+  btn.classList.add('on');
+  renderActive(name);
+}
+function renderActive(name){
+  if(!name){
+    var el=document.querySelector('.sec.on');
+    name=el?el.id.replace('s-',''):'';
+  }
+  if(name==='matrix')renderMatrix();
+  if(name==='profiles')renderProfiles();
+  if(name==='dashboard')renderDash();
+  if(name==='expect')renderExpect();
+}
+
+// =============================================
+// SETUP (Supabase) — kept as no-ops for backward compat
+// =============================================
+function saveUrl(){ toast('ℹ️ ระบบใช้ Supabase แล้ว — ไม่ต้องตั้งค่า URL'); }
+function testUrl(){ toast('ℹ️ ระบบใช้ Supabase แล้ว'); }
+function copyCode(){ toast('ℹ️ ไม่จำเป็นต้องคัดลอก Code แล้ว'); }
+function loadDemo(){ toast('ℹ️ ข้อมูลโหลดจาก Supabase อัตโนมัติ'); }
+
+// =============================================
+// TOAST
+// =============================================
+var _tt;
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(_tt);_tt=setTimeout(function(){t.style.display='none';},3500);}
+
+// =============================================
+// GENERATE AI SYSTEM PROMPT
+// =============================================
+function generatePrompt(p){
+  var posName=p.posLv>=0&&p.posLv!==undefined?POS[p.posLv].name:p.pos;
+  var ai=p.ai||{};
+  var sm=p.skillMap||{};
+  var topSkills=ALL.filter(function(s){return (p.sk[s.id]||0)>=4;})
+    .sort(function(a,b){return (p.sk[b.id]||0)-(p.sk[a.id]||0);})
+    .slice(0,5).map(function(s){return s.n+' ('+p.sk[s.id]+'/5)';}).join(', ');
+  var hrAvg=(HRS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/HRS.length).toFixed(1);
+  var dgAvg=(DIGS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/DIGS.length).toFixed(1);
+  var sfAvg=(SOFTS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/SOFTS.length).toFixed(1);
+
+  var lines=[];
+  lines.push('# AI Personal Assistant — System Prompt');
+  lines.push('## สร้างโดย Corp.HR KM System | Impact Exhibition Management');
+  lines.push('');
+  lines.push('---');
+  lines.push('');
+  lines.push('## 1. ข้อมูลพื้นฐาน');
+  lines.push('- ชื่อ: '+p.name+(p.nick?' ('+p.nick+')':''));
+  lines.push('- ตำแหน่ง: '+p.pos+' | ระดับ: '+posName);
+  lines.push('- หน้าที่หลัก: '+(p.func||'')+'  |  ประสบการณ์ HR: '+p.exp+' ปี');
+  lines.push('- บริษัท: Impact Exhibition Management Co., Ltd. — ฝ่าย Corp.HR');
+  lines.push('- คะแนน Skill เฉลี่ย: HR='+hrAvg+'/5 | Digital='+dgAvg+'/5 | Soft='+sfAvg+'/5');
+  if(topSkills)lines.push('- ทักษะเด่น (≥4/5): '+topSkills);
+  lines.push('');
+
+  if(p.summary1){
+    lines.push('## 2. ประโยคสรุปตนเอง');
+    lines.push(p.summary1);
+    lines.push('');
+  }
+
+  if(ai.a1||ai.a2||ai.a3){
+    lines.push('## 3. บุคลิกและสไตล์การทำงาน');
+    if(ai.a1)lines.push('- บุคลิก/สไตล์การทำงาน: '+ai.a1);
+    if(ai.a2)lines.push('- สไตล์การสื่อสาร: '+ai.a2);
+    if(ai.a3)lines.push('- ทำงานได้ดีที่สุดเมื่อ: '+ai.a3);
+    lines.push('');
+  }
+
+  if(ai.b1||ai.b2||ai.b3){
+    lines.push('## 4. บทบาทและความรับผิดชอบ');
+    if(ai.b1)lines.push('- บทบาทหลัก: '+ai.b1);
+    if(ai.b2)lines.push('- Stakeholder หลัก: '+ai.b2);
+    if(ai.b3)lines.push('- KPI / ตัวชี้วัดความสำเร็จ: '+ai.b3);
+    lines.push('');
+  }
+
+  if(ai.c1||ai.c2||ai.c3){
+    lines.push('## 5. ทักษะและความเชี่ยวชาญ');
+    if(ai.c1)lines.push('- สิ่งที่รู้ดีแล้ว (AI ไม่ต้องอธิบายซ้ำ): '+ai.c1);
+    if(ai.c2)lines.push('- กำลังเรียนรู้เพิ่มเติม (ให้ AI ช่วยแนะนำ): '+ai.c2);
+    if(ai.c3)lines.push('- เครื่องมือและระบบที่ใช้: '+ai.c3);
+    lines.push('');
+  }
+
+  if(ai.d1||ai.d2){
+    lines.push('## 6. งานประจำและสิ่งที่ต้องการให้ AI ช่วย');
+    if(ai.d1)lines.push('- งานที่ทำทุกวัน/ทุกเดือน: '+ai.d1);
+    if(ai.d2)lines.push('- ต้องการให้ AI ช่วย: '+ai.d2);
+    lines.push('');
+  }
+
+  if(ai.e1||ai.e2){
+    lines.push('## 7. ปัญหาและความท้าทาย');
+    if(ai.e1)lines.push('- งานที่เสียเวลา (AI ช่วยลดได้): '+ai.e1);
+    if(ai.e2)lines.push('- ความท้าทายหลักตอนนี้: '+ai.e2);
+    lines.push('');
+  }
+
+  if(ai.f1||ai.f2){
+    lines.push('## 8. วิธีที่ต้องการให้ AI ตอบ (สำคัญมาก)');
+    if(ai.f1)lines.push('- รูปแบบคำตอบที่ชอบ: '+ai.f1);
+    if(ai.f2)lines.push('- ภาษา + ข้อห้าม: '+ai.f2);
+    lines.push('');
+  }
+
+  if(sm.top3||sm.gaps3||sm.plan3m){
+    lines.push('## 9. Skill Map');
+    if(sm.top3)lines.push('- จุดแข็ง Top 3: '+sm.top3);
+    if(sm.gaps3)lines.push('- จุดที่ต้องพัฒนา Top 3: '+sm.gaps3);
+    if(sm.plan3m)lines.push('- แผนพัฒนา 3 เดือน: '+sm.plan3m);
+    lines.push('');
+  }
+
+  lines.push('---');
+  lines.push('*System Prompt นี้สร้างอัตโนมัติจาก Corp.HR KM System — อัปเดต: '+p.date+'*');
+  return lines.join('\n');
+}
+
+// =============================================
+// EXPORT PDF PROFILE
+// =============================================
+function exportProfile(idx){
+  var d=getData();var p=d[idx];if(!p)return;
+  var ai=p.ai||{};var sm=p.skillMap||{};
+  var posName=p.posLv>=0&&p.posLv!==undefined?POS[p.posLv].name:'—';
+  var posColor=p.posLv>=0&&p.posLv!==undefined?POS[p.posLv].c:'#718096';
+  var prompt=generatePrompt(p);
+
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+  function pct(v){return (v||0)*20;}
+  var bgColors=['#F7FAFC','#FEB2B2','#FEEBC8','#BEE3F8','#C6F6D5','#E9D8FD'];
+  var txColors=['#718096','#9B2C2C','#7B341E','#1A365D','#1C4532','#44337A'];
+
+  function skillRows(skills,cat){
+    var catColors={hr:'#4299E1',dig:'#38A169',soft:'#ED8936'};var cc=catColors[cat];
+    return skills.map(function(s){
+      var v=p.sk[s.id]||0;
+      var above=p.posLv>=0&&EXP[s.id]&&v>EXP[s.id][p.posLv];
+      return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #EDF2F7">'
+        +'<div style="flex:1;min-width:0;font-size:11px;font-weight:600;color:#2D3748">'+esc(s.n)+'</div>'
+        +'<div style="width:110px;background:#EDF2F7;border-radius:4px;height:10px;overflow:hidden;flex-shrink:0">'
+        +'<div style="width:'+pct(v)+'%;height:100%;background:'+cc+';border-radius:4px"></div></div>'
+        +'<div style="width:36px;text-align:center;font-size:11px;font-weight:800;background:'+bgColors[v]+';color:'+txColors[v]+';padding:2px 4px;border-radius:5px;flex-shrink:0">'+(v||'—')+'</div>'
+        +(above?'<div style="font-size:9px;color:#C05621;background:#FFF3E0;padding:1px 5px;border-radius:4px;flex-shrink:0">⚠️ เกินคาดหวัง</div>':'')
+        +'</div>';
+    }).join('');
+  }
+
+  function qualSection(cat,title,qs){
+    if(!p.qual||!p.qual[cat])return '';
+    var html='<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:800;color:#1E3A6E;background:#EEF2FF;padding:6px 10px;border-radius:6px;margin-bottom:8px">'+title+'</div>';
+    qs.forEach(function(q,i){
+      var ans=p.qual[cat]['q'+(i+1)]||'';
+      if(!ans)return;
+      html+='<div style="margin-bottom:8px"><div style="font-size:10px;font-weight:700;color:#718096;margin-bottom:3px">Q'+(i+1)+': '+q+'</div>'
+        +'<div style="font-size:11px;line-height:1.7;background:#F7FAFC;border-radius:6px;padding:8px 10px;border-left:3px solid #CBD5E0">'+esc(ans)+'</div></div>';
+    });
+    html+='</div>';
+    return html;
+  }
+
+  function aiSection(label,val){
+    if(!val)return '';
+    return '<div style="margin-bottom:6px"><span style="font-size:10px;font-weight:700;color:#5B21B6">'+label+'</span>'
+      +'<div style="font-size:11px;line-height:1.6;background:#F5F0FF;border-radius:5px;padding:6px 9px;margin-top:2px">'+esc(val)+'</div></div>';
+  }
+
+  var hrAvg=(HRS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/HRS.length).toFixed(1);
+  var dgAvg=(DIGS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/DIGS.length).toFixed(1);
+  var sfAvg=(SOFTS.reduce(function(a,s){return a+(p.sk[s.id]||0);},0)/SOFTS.length).toFixed(1);
+  var init=p.name.split(' ').map(function(x){return x[0];}).join('').slice(0,2);
+  var topSkills=ALL.filter(function(s){return (p.sk[s.id]||0)>=4;})
+    .sort(function(a,b){return (p.sk[b.id]||0)-(p.sk[a.id]||0);}).slice(0,6);
+
+  var html='<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8">'
+    +'<title>HR Profile — '+esc(p.name)+'</title>'
+    +'<style>'
+    +'*{box-sizing:border-box;margin:0;padding:0}'
+    +'body{font-family:"Segoe UI",system-ui,sans-serif;color:#2D3748;font-size:13px;background:#fff}'
+    +'@page{margin:12mm 14mm}'
+    +'@media print{.no-print{display:none!important}.page-break{page-break-before:always}}'
+    +'.wrap{max-width:860px;margin:0 auto;padding:20px}'
+    +'.hdr{background:linear-gradient(135deg,#1E3A6E,#2A52A0);color:#fff;padding:18px 22px;border-radius:10px;margin-bottom:14px;display:flex;align-items:center;gap:14px}'
+    +'.av{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0}'
+    +'.sec{background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:12px 14px;margin-bottom:10px}'
+    +'.sec-title{font-size:12px;font-weight:800;color:#1E3A6E;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #EBF4FF;display:flex;align-items:center;gap:6px}'
+    +'.tag{background:#EEF2FF;color:#1E3A6E;padding:2px 7px;border-radius:7px;font-size:10px;font-weight:700;display:inline-block;margin:2px}'
+    +'.prompt-box{background:#1A202C;color:#68D391;padding:14px;border-radius:8px;font-family:monospace;font-size:11px;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:none}'
+    +'.stat-box{display:inline-flex;flex-direction:column;align-items:center;background:#EEF2FF;border-radius:8px;padding:8px 14px;min-width:70px}'
+    +'</style></head><body>'
+    +'<div class="wrap">'
+
+    // HEADER
+    +'<div class="hdr">'
+    +'<div class="av">'+esc(init)+'</div>'
+    +'<div style="flex:1">'
+    +'<div style="font-size:20px;font-weight:900">'+esc(p.name)+(p.nick?' <span style="font-size:14px;opacity:.8">('+esc(p.nick)+')</span>':'')+'</div>'
+    +'<div style="font-size:13px;opacity:.85;margin-top:2px">'+esc(p.pos)+' · '+esc(p.func)+' · '+p.exp+' ปี</div>'
+    +'<div style="margin-top:6px"><span style="background:'+posColor+';color:#fff;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700">'+esc(posName)+'</span>'
+    +'<span style="opacity:.7;font-size:11px;margin-left:10px">อัปเดต: '+esc(p.date||'')+'</span></div>'
+    +'</div>'
+    +'<div style="display:flex;gap:10px;flex-shrink:0">'
+    +'<div class="stat-box"><div style="font-size:22px;font-weight:900;color:#4299E1">'+hrAvg+'</div><div style="font-size:9px;opacity:.8;color:#4299E1">HR</div></div>'
+    +'<div class="stat-box"><div style="font-size:22px;font-weight:900;color:#38A169">'+dgAvg+'</div><div style="font-size:9px;opacity:.8;color:#38A169">Digital</div></div>'
+    +'<div class="stat-box"><div style="font-size:22px;font-weight:900;color:#ED8936">'+sfAvg+'</div><div style="font-size:9px;opacity:.8;color:#ED8936">Soft</div></div>'
+    +'</div>'
+    +'</div>'
+
+    // SUMMARY
+    +(p.summary1?'<div class="sec" style="background:#FFFBEB;border-color:#FBD38D">'
+    +'<div class="sec-title">💬 ประโยคสรุปตนเอง</div>'
+    +'<div style="font-size:13px;font-style:italic;color:#92400E;line-height:1.7">'+esc(p.summary1)+'</div></div>':'')
+
+    // TOP SKILLS TAGS
+    +(topSkills.length?'<div class="sec"><div class="sec-title">⭐ ทักษะเด่น (ระดับ 4–5)</div><div>'
+    +topSkills.map(function(s){return '<span class="tag">'+esc(s.n)+' '+p.sk[s.id]+'/5</span>';}).join('')
+    +'</div></div>':'')
+
+    // SKILL MAP
+    +(sm.top3||sm.gaps3||sm.plan3m?'<div class="sec" style="background:#F0FFF4;border-color:#9AE6B4">'
+    +'<div class="sec-title">🗺️ Skill Map — แผนพัฒนาตนเอง</div>'
+    +(sm.top3?'<div style="margin-bottom:8px"><div style="font-size:11px;font-weight:700;color:#276749;margin-bottom:3px">⭐ Top 3 จุดแข็ง</div>'
+    +'<div style="font-size:11px;line-height:1.7;background:#C6F6D5;border-radius:6px;padding:7px 10px">'+esc(sm.top3)+'</div></div>':'')
+    +(sm.gaps3?'<div style="margin-bottom:8px"><div style="font-size:11px;font-weight:700;color:#9B2C2C;margin-bottom:3px">🎯 Top 3 จุดที่ต้องพัฒนา</div>'
+    +'<div style="font-size:11px;line-height:1.7;background:#FED7D7;border-radius:6px;padding:7px 10px">'+esc(sm.gaps3)+'</div></div>':'')
+    +(sm.plan3m?'<div><div style="font-size:11px;font-weight:700;color:#2C5282;margin-bottom:3px">📅 แผน 3 เดือน</div>'
+    +'<div style="font-size:11px;line-height:1.7;background:#BEE3F8;border-radius:6px;padding:7px 10px">'+esc(sm.plan3m)+'</div></div>':'')
+    +'</div>':'')
+
+    // SKILL RATINGS
+    +'<div class="sec"><div class="sec-title">🏢 HR Functional Skills</div>'+skillRows(HRS,'hr')+'</div>'
+    +'<div class="sec"><div class="sec-title">💻 Digital & Technology Skills</div>'+skillRows(DIGS,'dig')+'</div>'
+    +'<div class="sec"><div class="sec-title">🌟 Soft Skills & Competencies</div>'+skillRows(SOFTS,'soft')+'</div>'
+
+    // QUALITATIVE
+    +'<div class="sec">'
+    +qualSection('hr','✍️ HR Functional — คำถามเชิงคุณภาพ',['กระบวนการทำงาน','เป้าหมายและผลลัพธ์','ความสำเร็จและบทเรียน'])
+    +qualSection('dig','✍️ Digital Skills — คำถามเชิงคุณภาพ',['เครื่องมือที่ใช้','Project สร้างผลลัพธ์','แผนพัฒนา Digital'])
+    +qualSection('soft','✍️ Soft Skills — คำถามเชิงคุณภาพ',['ตัวอย่าง Soft Skills','การทำงานร่วมกัน','แผนพัฒนา'])
+    +'</div>'
+
+    // AI TRAINING TEMPLATE
+    +((ai.a1||ai.b1||ai.c1||ai.d1||ai.e1||ai.f1)?
+    '<div class="sec" style="background:#F5F0FF;border-color:#C4B5FD">'
+    +'<div class="sec-title">🤖 AI Training Template</div>'
+    +'<div style="font-size:11px;font-weight:800;color:#5B21B6;margin:8px 0 4px;padding:4px 8px;background:#EDE9FE;border-radius:5px">A · บุคลิกและสไตล์</div>'
+    +aiSection('บุคลิกการทำงาน',ai.a1)+aiSection('สไตล์การสื่อสาร',ai.a2)+aiSection('ทำงานได้ดีเมื่อ',ai.a3)
+    +'<div style="font-size:11px;font-weight:800;color:#5B21B6;margin:10px 0 4px;padding:4px 8px;background:#EDE9FE;border-radius:5px">B · บทบาทและ KPI</div>'
+    +aiSection('บทบาทหลัก',ai.b1)+aiSection('Stakeholder',ai.b2)+aiSection('KPI',ai.b3)
+    +'<div style="font-size:11px;font-weight:800;color:#5B21B6;margin:10px 0 4px;padding:4px 8px;background:#EDE9FE;border-radius:5px">C · ทักษะและเครื่องมือ</div>'
+    +aiSection('รู้ดีแล้ว (ไม่ต้องอธิบายซ้ำ)',ai.c1)+aiSection('กำลังเรียนรู้',ai.c2)+aiSection('เครื่องมือที่ใช้',ai.c3)
+    +'<div style="font-size:11px;font-weight:800;color:#5B21B6;margin:10px 0 4px;padding:4px 8px;background:#EDE9FE;border-radius:5px">D · งานประจำ</div>'
+    +aiSection('งานทุกวัน/ทุกเดือน',ai.d1)+aiSection('ต้องการให้ AI ช่วย',ai.d2)
+    +'<div style="font-size:11px;font-weight:800;color:#5B21B6;margin:10px 0 4px;padding:4px 8px;background:#EDE9FE;border-radius:5px">E · ความท้าทาย</div>'
+    +aiSection('งานที่เสียเวลา',ai.e1)+aiSection('ความท้าทายหลัก',ai.e2)
+    +'<div style="font-size:11px;font-weight:800;color:#5B21B6;margin:10px 0 4px;padding:4px 8px;background:#EDE9FE;border-radius:5px">F · วิธีที่ต้องการให้ AI ตอบ</div>'
+    +aiSection('รูปแบบคำตอบ',ai.f1)+aiSection('ภาษา + ข้อห้าม',ai.f2)
+    +'</div>':'')
+
+    // AI SYSTEM PROMPT — THE KEY SECTION FOR CHATGPT
+    +'<div class="sec" style="background:#1A202C;border:none">'
+    +'<div class="sec-title" style="color:#68D391;border-bottom-color:#2D3748">'
+    +'🤖 My AI System Prompt — คัดลอกไปวางใน ChatGPT / Claude'
+    +'</div>'
+    +'<div class="no-print" style="margin-bottom:10px">'
+    +'<button onclick="navigator.clipboard.writeText(document.getElementById(\'prompt-txt\').textContent).then(function(){this.textContent=\'✅ Copied!\';}.bind(this))" '
+    +'style="background:#276749;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer">📋 คัดลอก System Prompt</button>'
+    +'</div>'
+    +'<div class="prompt-box" id="prompt-txt">'+esc(prompt)+'</div>'
+    +'</div>'
+
+    +'<div class="no-print" style="text-align:center;margin-top:14px;padding:12px;background:#EEF2FF;border-radius:8px;font-size:12px;color:#4A5568">'
+    +'💡 <strong>วิธีใช้:</strong> กด "คัดลอก System Prompt" ด้านบน → เปิด ChatGPT / Claude → ตั้งค่า Custom Instructions หรือวางไว้ต้น Conversation<br>'
+    +'หรือ กด <strong>Ctrl+P</strong> / <strong>⌘P</strong> เพื่อ Print / บันทึกเป็น PDF'
+    +'</div>'
+
+    +'</div>'// end wrap
+    +'<script>setTimeout(function(){window.print();},800);<\/script>'
+    +'</body></html>';
+
+  var w=window.open('','_blank');
+  if(w){w.document.write(html);w.document.close();}
+  else{toast('❌ บราวเซอร์บล็อก Popup — กรุณาอนุญาต Popup แล้วลองใหม่');}
+}
+
+// =============================================
+// APPS SCRIPT CODE
+// =============================================
+var GSCODE=
+'// =======================================\n'+
+'// Corp.HR KM System — Google Apps Script\n'+
+'// วาง code นี้ใน Apps Script ของ Google Sheets\n'+
+'// แล้ว Deploy เป็น Web App\n'+
+'// =======================================\n\n'+
+'var SHEET = \'KM_Data\';\n'+
+'var META = [\'name\',\'nick\',\'pos\',\'func\',\'exp\',\'date\',\'posLv\'];\n'+
+'var SKILLS = [\'rec\',\'pay\',\'lnd\',\'cnb\',\'hris\',\'er\',\'od\',\'hrstrat\',\n'+
+'              \'excel\',\'pbi\',\'gws\',\'ai\',\'hra\',\'sys\',\n'+
+'              \'comm\',\'lead\',\'pm\',\'ana\',\'team\',\'adapt\'];\n'+
+'var QUALS = [\'hr_q1\',\'hr_q2\',\'hr_q3\',\'dig_q1\',\'dig_q2\',\'dig_q3\',\'soft_q1\',\'soft_q2\',\'soft_q3\'];\n'+
+'var JUSTS = SKILLS.map(function(s){return \'j_\'+s;});\n\n'+
+'function doGet(e) {\n'+
+'  var sheet = getOrCreateSheet();\n'+
+'  var vals = sheet.getDataRange().getValues();\n'+
+'  if (vals.length <= 1) return respond([], e.parameter.callback);\n'+
+'  var hdrs = vals[0];\n'+
+'  var rows = vals.slice(1).map(function(row) {\n'+
+'    var obj = {sk:{},qual:{hr:{},dig:{},soft:{}},justifs:{}};\n'+
+'    hdrs.forEach(function(h,i) {\n'+
+'      if (META.indexOf(h)>=0) obj[h]=row[i];\n'+
+'      else if (SKILLS.indexOf(h)>=0) obj.sk[h]=Number(row[i])||0;\n'+
+'      else if (h.indexOf(\'_q\')>0) {\n'+
+'        var p=h.split(\'_\'); obj.qual[p[0]][p[1]]=row[i];\n'+
+'      }\n'+
+'      else if (h.indexOf(\'j_\')===0) { var sk=h.slice(2); if(row[i]) obj.justifs[sk]=row[i]; }\n'+
+'    });\n'+
+'    return obj;\n'+
+'  });\n'+
+'  return respond(rows, e.parameter.callback);\n'+
+'}\n\n'+
+'function doPost(e) {\n'+
+'  var payload = JSON.parse(e.postData.contents);\n'+
+'  if (payload.action === \'save\') upsertRow(getOrCreateSheet(), payload.data);\n'+
+'  return respond({success:true}, null);\n'+
+'}\n\n'+
+'function getOrCreateSheet() {\n'+
+'  var ss = SpreadsheetApp.getActiveSpreadsheet();\n'+
+'  var sh = ss.getSheetByName(SHEET);\n'+
+'  if (!sh) {\n'+
+'    sh = ss.insertSheet(SHEET);\n'+
+'    var hdrs = META.concat(SKILLS).concat(QUALS).concat(JUSTS);\n'+
+'    sh.appendRow(hdrs);\n'+
+'    sh.getRange(1,1,1,hdrs.length).setBackground(\'#1E3A6E\').setFontColor(\'#fff\').setFontWeight(\'bold\');\n'+
+'    sh.setFrozenRows(1);\n'+
+'  }\n'+
+'  return sh;\n'+
+'}\n\n'+
+'function upsertRow(sh, data) {\n'+
+'  var hdrs = sh.getRange(1,1,1,sh.getLastColumn()).getValues()[0];\n'+
+'  var lastRow = sh.getLastRow();\n'+
+'  var nameIdx = hdrs.indexOf(\'name\')+1;\n'+
+'  var names = lastRow>1 ? sh.getRange(2,nameIdx,lastRow-1,1).getValues().flat() : [];\n'+
+'  var ei = names.indexOf(data.name);\n'+
+'  var row = hdrs.map(function(h) {\n'+
+'    if (META.indexOf(h)>=0) return data[h]!==undefined?data[h]:\'\';\n'+
+'    if (SKILLS.indexOf(h)>=0) return data.sk&&data.sk[h]!==undefined?data.sk[h]:0;\n'+
+'    if (h.indexOf(\'_q\')>0) { var p=h.split(\'_\'); return data.qual&&data.qual[p[0]]?data.qual[p[0]][p[1]]||\'\':\'\'; }\n'+
+'    if (h.indexOf(\'j_\')===0) { var sk=h.slice(2); return data.justifs&&data.justifs[sk]?data.justifs[sk]:\'\'; }\n'+
+'    return \'\';\n'+
+'  });\n'+
+'  if (ei>=0) sh.getRange(ei+2,1,1,row.length).setValues([row]);\n'+
+'  else sh.appendRow(row);\n'+
+'}\n\n'+
+'function respond(data, callback) {\n'+
+'  var json = JSON.stringify(data);\n'+
+'  if (callback) {\n'+
+'    return ContentService.createTextOutput(callback+\'(\'+json+\')\')\n'+
+'      .setMimeType(ContentService.MimeType.JAVASCRIPT);\n'+
+'  }\n'+
+'  return ContentService.createTextOutput(json)\n'+
+'    .setMimeType(ContentService.MimeType.JSON);\n'+
+'}';
+
+// =============================================
+// INIT
+// =============================================
+document.addEventListener('DOMContentLoaded', async function(){
+  initForm();
+  // ตรวจ session ที่จำไว้ — ถ้ามี → ข้าม login
+  var sess = await sb.auth.getSession();
+  if(sess.data && sess.data.session){
+    await onAuthed();
+  } else {
+    document.getElementById('loginOverlay').style.display='flex';
+    setTimeout(function(){ document.getElementById('loginEmp').focus(); }, 100);
+  }
+});
+</script>
+</body>
+</html>
