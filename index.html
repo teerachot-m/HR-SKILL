@@ -757,6 +757,7 @@ async function onAuthed(){
   document.getElementById('userName').textContent =
     (CURRENT_USER.nick||CURRENT_USER.name) + (CURRENT_USER.is_admin?' (Admin)':'');
   await reloadData();
+  autoFillProfile();
   if(typeof renderActive==='function') renderActive();
 }
 
@@ -797,8 +798,86 @@ async function doChangePin(ev){
   document.getElementById('userName').textContent =
     (CURRENT_USER.nick||CURRENT_USER.name) + (CURRENT_USER.is_admin?' (Admin)':'');
   await reloadData();
+  autoFillProfile();
   if(typeof renderActive==='function') renderActive();
   return false;
+}
+
+// =============================================
+// AUTO FILL PROFILE & LOGGED IN DATA
+// =============================================
+function autoFillProfile(){
+  if(!CURRENT_USER) return;
+  document.getElementById('fn').value = CURRENT_USER.name || '';
+  document.getElementById('fk').value = CURRENT_USER.nick || '';
+  document.getElementById('fp').value = CURRENT_USER.position || '';
+  document.getElementById('fe').value = CURRENT_USER.experience_years || 0;
+  
+  var funcVal = CURRENT_USER.function || '';
+  var selectEl = document.getElementById('ff');
+  if(selectEl && funcVal){
+    var foundFunc = false;
+    for(var i=0; i<selectEl.options.length; i++){
+      if(selectEl.options[i].text === funcVal || selectEl.options[i].value === funcVal){
+        selectEl.selectedIndex = i;
+        foundFunc = true;
+        break;
+      }
+    }
+    if(!foundFunc){
+      for(var i=0; i<selectEl.options.length; i++){
+        if(funcVal.toLowerCase().indexOf(selectEl.options[i].text.toLowerCase()) >= 0 ||
+           funcVal.toLowerCase().indexOf(selectEl.options[i].value.toLowerCase()) >= 0){
+          selectEl.selectedIndex = i;
+          break;
+        }
+      }
+    }
+  }
+  
+  if(CURRENT_USER.position_level !== undefined && CURRENT_USER.position_level !== null && CURRENT_USER.position_level >= 0){
+    document.getElementById('fpl').value = CURRENT_USER.position_level;
+    onPosChange();
+  }
+  
+  var p = DATA_CACHE.find(function(x){return x._id === CURRENT_USER.id;});
+  if(p){
+    setRatingsFromSk(p.sk||{});
+    justifs = JSON.parse(JSON.stringify(p.justifs||{}));
+    
+    // Fill qualitative
+    var qmap = {hr:['qh1','qh2','qh3'], dig:['qd1','qd2','qd3'], soft:['qs1','qs2','qs3']};
+    var cats = ['hr','dig','soft'];
+    cats.forEach(function(cat){
+      if(p.qual && p.qual[cat]){
+        qmap[cat].forEach(function(id, idx){
+          var el = document.getElementById(id);
+          if(el) el.value = p.qual[cat]['q'+(idx+1)] || '';
+        });
+        updQ(cat);
+      }
+    });
+    
+    // Fill Skill Map
+    var smMap = {top3:'sm-top3', gaps3:'sm-gaps3', plan3m:'sm-plan3m'};
+    var smData = p.skillMap || {};
+    Object.keys(smMap).forEach(function(k){
+      var el = document.getElementById(smMap[k]);
+      if(el) el.value = smData[k] || '';
+    });
+    
+    // Fill Summary
+    var sumEl = document.getElementById('ai-summary');
+    if(sumEl) sumEl.value = p.summary1 || '';
+    
+    // Fill AI Template
+    var aiKeys = ['a1','a2','a3','b1','b2','b3','c1','c2','c3','d1','d2','e1','e2','f1','f2'];
+    var aiSrc = p.ai || {};
+    aiKeys.forEach(function(k){
+      var el = document.getElementById('ai-'+k);
+      if(el) el.value = aiSrc[k] || '';
+    });
+  }
 }
 
 // =============================================
@@ -808,6 +887,7 @@ async function reloadData(){
   var r = await sb.from('latest_assessment').select('*');
   if(r.error){ toast('❌ โหลดข้อมูลไม่สำเร็จ: '+r.error.message); return; }
   DATA_CACHE = (r.data||[]).map(function(row){
+    var qual = row.qualitative || {hr:{},dig:{},soft:{}};
     return {
       _id:        row.employee_id,
       _aid:       row.assessment_id,
@@ -820,7 +900,10 @@ async function reloadData(){
       date:       row.assessment_date||'',
       sk:         row.skills||{},
       justifs:    row.justifications||{},
-      qual:       row.qualitative||{hr:{},dig:{},soft:{}}
+      qual:       qual,
+      skillMap:   qual.skillMap || {},
+      summary1:   qual.summary1 || '',
+      ai:         qual.ai || {}
     };
   });
 }
@@ -857,12 +940,19 @@ async function upsert(profile){
     }).eq('id', employee_id);
   }
 
+  // Pack skillMap, summary1, and ai inside qualitative JSONB to persist them in Supabase
+  var qualitative = Object.assign({}, profile.qual || {}, {
+    skillMap: profile.skillMap || {},
+    summary1: profile.summary1 || '',
+    ai:       profile.ai || {}
+  });
+
   // 2) สร้าง assessment record ใหม่ (เก็บประวัติแต่ละครั้ง)
   var asm = await sb.from('assessments').insert({
     employee_id: employee_id,
     assessment_date: profile.date || new Date().toISOString().slice(0,10),
     skills: profile.sk||{}, justifications: profile.justifs||{},
-    qualitative: profile.qual||{}, created_by: CURRENT_USER.id
+    qualitative: qualitative, created_by: CURRENT_USER.id
   });
   if(asm.error){ toast('❌ บันทึก assessment ไม่สำเร็จ: '+asm.error.message); return; }
 
